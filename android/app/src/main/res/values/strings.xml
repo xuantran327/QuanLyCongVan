@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Quản lý công văn</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">oCTV7ebQs_PNw6p0JlABeBzVjc4lkDiiuebSI</string>
+</resources>
