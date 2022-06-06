@@ -16,7 +16,9 @@ const {s, c} = bootstrapStyleSheet;
 
 const Tab = createBottomTabNavigator();
 
-const HomeContainer = () => {
+const HomeContainer = route => {
+  const userId = Object.values(route)[1].params.userId;
+  // console.log(userId);
   return (
     <Tab.Navigator
       initialRouteName="Trang chủ"
@@ -41,6 +43,7 @@ const HomeContainer = () => {
       <Tab.Screen
         name="Tài khoản"
         component={AccountScreen}
+        initialParams={{userId: userId}}
         options={{
           tabBarIcon: ({color, size}) => (
             <FontAwesomeIcon icon={faUser} color={color} size={size} />

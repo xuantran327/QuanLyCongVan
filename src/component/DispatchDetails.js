@@ -16,7 +16,7 @@ import {NativeModules} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
 import {styles} from '../../styles';
-import {getDateTime, getDate} from '../../function';
+import {getDateTime, getDate, ipAddress} from '../../function';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -24,6 +24,7 @@ const {s, c} = bootstrapStyleSheet;
 // const RNFetchBlob = NativeModules.RNFetchBlob;
 
 const DispatchDetails = props => {
+  const IP_ADDRESS = ipAddress();
   const navigation = useNavigation();
   const [dispatch, setDispatch] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -55,7 +56,7 @@ const DispatchDetails = props => {
           '/file_' +
           Math.floor(date.getTime() + date.getSeconds() / 2) +
           file_ext,
-        description: 'downloading file...',
+        description: 'Downloading file...',
         notification: true,
         // useDownloadManager works with Android only
         useDownloadManager: true,
@@ -71,7 +72,7 @@ const DispatchDetails = props => {
   };
   const checkPermision = async filename => {
     const fileUrl =
-      'http://192.168.1.16:8080/QuanLyCongVan/public/upload/' + filename;
+      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/upload/` + filename;
     if (Platform.OS === 'ios') {
       download(fileUrl);
     } else {
@@ -100,7 +101,7 @@ const DispatchDetails = props => {
   };
   useEffect(() => {
     fetch(
-      'http://192.168.1.16:8080/QuanLyCongVan/public/api/dispatch-detail/' +
+      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-detail/` +
         props.id,
       {
         method: 'GET',
@@ -117,7 +118,7 @@ const DispatchDetails = props => {
         setDispatch(array);
         setIsLoaded(true);
       });
-  }, [props.id]);
+  }, [IP_ADDRESS, props.id]);
   if (!isLoaded) {
     return (
       <View>
@@ -149,7 +150,7 @@ const DispatchDetails = props => {
                   }}
                   source={{
                     uri:
-                      'http://192.168.1.16:8080/QuanLyCongVan/public/image/thumbnail/' +
+                      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/` +
                       item.thumbnail,
                   }}
                 />

@@ -7,12 +7,13 @@ import {useNavigation} from '@react-navigation/native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
 import {styles} from '../../styles';
-import {getDateTime} from '../../function';
+import {getDateTime, ipAddress} from '../../function';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const NewDispatch = () => {
+  const IP_ADDRESS = ipAddress();
   const navigation = useNavigation();
   const [dispatch, setDispatch] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -20,7 +21,7 @@ const NewDispatch = () => {
     navigation.navigate('Chi tiết công văn', {dispatchId: id});
   };
   useEffect(() => {
-    fetch('http://192.168.1.16:8080/QuanLyCongVan/public/api/new-dispatch', {
+    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/new-dispatch`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -33,7 +34,7 @@ const NewDispatch = () => {
         // console.log(dispatch.length);
         setIsLoaded(true);
       });
-  }, []);
+  }, [IP_ADDRESS]);
   if (!isLoaded) {
     return (
       <View>
@@ -64,7 +65,7 @@ const NewDispatch = () => {
                 style={{width: '100%', height: 200}}
                 source={{
                   uri:
-                    'http://192.168.1.16:8080/QuanLyCongVan/public/image/thumbnail/' +
+                    `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/` +
                     item.thumbnail,
                 }}
               />

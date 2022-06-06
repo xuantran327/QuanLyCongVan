@@ -13,14 +13,18 @@ import {faSync} from '@fortawesome/free-solid-svg-icons/faSync';
 import {faUser} from '@fortawesome/free-solid-svg-icons/faUser';
 import {faLock} from '@fortawesome/free-solid-svg-icons/faLock';
 import {styles} from '../../styles';
+import {ipAddress} from '../../function';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const AccountScreen = props => {
+  const IP_ADDRESS = ipAddress();
+  const userId = Object.values(props)[1].params.userId;
+  // console.log(userId);
   const navigation = useNavigation();
   let logOut = () => {
-    fetch('http://192.168.1.16:8080/QuanLyCongVan/public/api/logout', {
+    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/logout`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -41,9 +45,11 @@ const AccountScreen = props => {
   };
   return (
     <View>
-      <AccountAvatar />
+      <AccountAvatar id={userId} />
       <TouchableOpacity
-        onPress={() => props.navigation.navigate('Thông tin cá nhân')}
+        onPress={() =>
+          props.navigation.navigate('Thông tin cá nhân', {userId: userId})
+        }
         style={[
           s.p3,
           s.mx3,

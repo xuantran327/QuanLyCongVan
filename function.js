@@ -33,3 +33,23 @@ export const getDate = dt => {
     ' '
   );
 };
+export const getDateAlt = dt => {
+  var date = new Date(dt).getDate(); //To get the Current Date
+  var month = new Date(dt).getMonth() + 1; //To get the Current Month
+  var year = new Date(dt).getFullYear(); //To get the Current Year
+  return (
+    year +
+    '-' +
+    (month < 10 ? '0' + month : month) +
+    '-' +
+    (date < 10 ? '0' + date : date)
+  );
+};
+export const ipAddress = () => {
+  const IP_ADDRESS = '192.168.1.5';
+  return IP_ADDRESS.toString();
+};
+export const getExtension = fileName => {
+  let extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+  return extension;
+};

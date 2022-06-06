@@ -4,6 +4,7 @@ import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {Card} from 'react-native-elements';
 import {styles} from '../../styles';
 import {useNavigation} from '@react-navigation/native';
+import {ipAddress} from '../../function';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -11,11 +12,12 @@ const {s, c} = bootstrapStyleSheet;
 const showAlert = str => Alert.alert('Thông báo', str);
 
 const LoginScreen = () => {
+  const IP_ADDRESS = ipAddress();
   const navigation = useNavigation();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   let loginCheck = () => {
-    fetch('http://192.168.1.16:8080/QuanLyCongVan/public/api/login', {
+    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,7 +30,8 @@ const LoginScreen = () => {
         console.log(resData);
         showAlert(resData.message);
         if (resData.status == 200) {
-          navigation.navigate('HomeContainer');
+          navigation.navigate('HomeContainer', {userId: resData.userId});
+          // navigation.navigate('HomeContainer');
         }
       })
       .catch(error => {

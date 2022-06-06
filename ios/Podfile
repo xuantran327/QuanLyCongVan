@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '11.0'
 install! 'cocoapods', :deterministic_uuids => false
 
-target 'DemoProject' do
+target 'DispatchesManagement' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -27,7 +27,11 @@ target 'DemoProject' do
 
   pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
 
-  target 'DemoProjectTests' do
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'react-native-date-picker', :path => '../node_modules/react-native-date-picker'
+
+  target 'DispatchesManagementTests' do
     inherit! :complete
     # Pods for testing
   end

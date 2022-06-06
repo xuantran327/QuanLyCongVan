@@ -4,48 +4,82 @@ import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 import {styles} from '../../styles';
+import {ipAddress} from '../../function';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const AccountAvatar = () => {
-  const [dispatch, setDispatch] = useState([]);
+const AccountAvatar = props => {
+  const IP_ADDRESS = ipAddress();
+  const [data, setData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    fetch('http://192.168.1.16:8080/QuanLyCongVan/public/api/user/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+    fetch(
+      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/user/` + props.id,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
       },
-    })
+    )
       .then(response => response.json())
-      .then(dispatch => {
-        // setDispatch(dispatch);
-        console.log(dispatch);
+      .then(data => {
+        let array = [];
+        array.push(data);
+        setData(array);
         setIsLoaded(true);
+        // console.log(array);
       });
-  }, []);
-  return (
-    <View style={[s.flexRow, s.justifyContentStart, s.m3]}>
-      <Image
-        style={{
-          width: 80,
-          height: 80,
-          borderRadius: 40,
-        }}
-        source={require('../../img/default-avatar.png')}
-        resizeMode="contain"
-      />
-      <View style={[s.justifyContentCenter, s.ml3]}>
-        <Text style={[s.fontWeightBold, styles.fontSize20]}>
-          Trần Thị Xuân Xuân
-        </Text>
-        <Text style={[styles.fontSize16, s.mt1]}>
-          rapunzelxuantran@gmail.com
-        </Text>
+  }, [IP_ADDRESS, props.id]);
+  if (!isLoaded) {
+    return (
+      <View style={[s.flexRow, s.justifyContentStart, s.m3]}>
+        <Image
+          style={{
+            width: 80,
+            height: 80,
+            borderRadius: 40,
+          }}
+          source={require('../../img/default-avatar.png')}
+          resizeMode="contain"
+        />
+        <View style={[s.justifyContentCenter, s.ml3]}>
+          <Text style={[s.fontWeightBold, styles.fontSize20]}>Đang tải...</Text>
+          <Text style={[styles.fontSize16, s.mt1]}>Đang tải...</Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View>
+        {data &&
+          data.map(item => (
+            <View
+              key={item.id}
+              style={[s.flexRow, s.justifyContentStart, s.m3]}>
+              <Image
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 40,
+                }}
+                source={{
+                  uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/avatar/${item.avatar_link}`,
+                }}
+                resizeMode="contain"
+              />
+              <View style={[s.justifyContentCenter, s.ml3]}>
+                <Text style={[s.fontWeightBold, styles.fontSize20]}>
+                  {item.name}
+                </Text>
+                <Text style={[styles.fontSize16, s.mt1]}>{item.email}</Text>
+              </View>
+            </View>
+          ))}
+      </View>
+    );
+  }
 };
 export default AccountAvatar;

@@ -4,11 +4,13 @@ import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {ScrollView} from 'react-native-gesture-handler';
 
 import {styles} from '../../styles';
+import {ipAddress} from '../../function';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const Slide = () => {
+  const IP_ADDRESS = ipAddress();
   const [image, setImage] = useState([]);
   const [imgActive, setImgActive] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -23,7 +25,7 @@ const Slide = () => {
     }
   };
   useEffect(() => {
-    fetch('http://192.168.1.16:8080/QuanLyCongVan/public/api/slide', {
+    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +38,7 @@ const Slide = () => {
         console.log(image);
         setIsLoaded(true);
       });
-  }, []);
+  }, [IP_ADDRESS]);
   if (!isLoaded) {
     return (
       <View
@@ -57,7 +59,7 @@ const Slide = () => {
         resizeMode="stretch"
         style={[styles.wrap]}
         source={{
-          uri: 'http://192.168.1.16:8080/QuanLyCongVan/public/image/slide/default.png',
+          uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/slide/default.png`,
         }}
       />
     );
@@ -78,7 +80,7 @@ const Slide = () => {
                 style={[styles.wrap]}
                 source={{
                   uri:
-                    'http://192.168.1.16:8080/QuanLyCongVan/public/image/slide/' +
+                    `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/slide/` +
                     e.image,
                 }}
               />

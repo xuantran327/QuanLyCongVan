@@ -16,7 +16,7 @@ import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
 import {faPenAlt} from '@fortawesome/free-solid-svg-icons/faPenAlt';
 import {getDateTime} from '../../function';
-import {getDate} from '../../function';
+import {getDate, ipAddress} from '../../function';
 
 import {styles} from '../../styles';
 
@@ -24,6 +24,7 @@ const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const DispatchList = props => {
+  const IP_ADDRESS = ipAddress();
   const navigation = useNavigation();
   const [selectedId, setSelectedId] = useState(null);
   const [dispatch, setDispatch] = useState([]);
@@ -55,7 +56,7 @@ const DispatchList = props => {
             }}
             source={{
               uri:
-                'http://192.168.1.16:8080/QuanLyCongVan/public/image/thumbnail/' +
+                `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/` +
                 item.thumbnail,
             }}
           />
@@ -71,7 +72,6 @@ const DispatchList = props => {
               ]}>
               {item.trich_yeu_noi_dung}
             </Text>
-            <Text style={[s.mt1]}>Ngày ký: {getDate(item.ngay_ky)}</Text>
             <Text style={[s.mt1]}>
               Cập nhật: {getDateTime(item.updated_at)}
             </Text>
@@ -82,8 +82,8 @@ const DispatchList = props => {
   );
   let url =
     props.search == '' || props.search == null
-      ? 'http://192.168.1.16:8080/QuanLyCongVan/public/api/dispatch-list/'
-      : 'http://192.168.1.16:8080/QuanLyCongVan/public/api/dispatch-list/' +
+      ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-list/`
+      : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-list/` +
         props.search;
   useEffect(() => {
     fetch(url, {
