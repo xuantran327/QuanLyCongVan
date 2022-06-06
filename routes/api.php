@@ -26,4 +26,6 @@ Route::get('new-dispatch', [PagesController::class,'newDispatch']);
 Route::get('dispatch-detail/{id}', [PagesController::class,'dispatchDetails']);
 Route::get('dispatch-list', [PagesController::class,'dispatchList']);
 Route::get('dispatch-list/{search}', [PagesController::class,'search']);
-Route::get('user', [PagesController::class,'user']);
+Route::get('user/{id}', [PagesController::class,'user']);
+Route::post('upload-avatar', [PagesController::class,'uploadAvatar']);
+Route::post('edit-user/{id}', [PagesController::class,'editUser']);

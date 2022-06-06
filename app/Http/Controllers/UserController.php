@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 class UserController extends Controller
 {
@@ -144,7 +146,7 @@ class UserController extends Controller
 
 		$user->role_id = $request->roleId;
 		$user->save();
-
+        // Log::info('This is some useful information.');
 		return redirect('admin/user/edit/' . $id)->with('notification', 'Sửa thành công');
 	}
 

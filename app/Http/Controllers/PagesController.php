@@ -12,6 +12,8 @@ use App\Models\Slide;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\View;
 
 class PagesController extends Controller
@@ -43,7 +45,7 @@ class PagesController extends Controller
             // session(['user' => $user]);
 
             // return response()->json(session()->get('user'));
-            return response()->json(['message' => 'Đăng nhập thành công!', 'status' => 200]);
+            return response()->json(['message' => 'Đăng nhập thành công!', 'status' => 200, 'userId' => Auth::user()->id]);
         } else {
             return response()->json(['message' => 'Đăng nhập không thành công, mời nhập lại!', 'status' => 401]);
         }
@@ -109,9 +111,44 @@ class PagesController extends Controller
         return response()->json($congvan);
     }
 
-    public function user()
+    public function user($id)
     {
-        // $user = Auth::user()->id;
-        return response()->json(session()->get('user'));
+        $user = User::find($id);
+        return response()->json($user);
+    }
+
+    public function uploadAvatar(Request $request)
+    {
+
+            $base64 = $request->base64;
+            $fileName = $request->fileName;
+            file_put_contents('image/avatar/'.$fileName, base64_decode($base64));
+
+            return response()->json(['message' => 'Tải ảnh thành công!', 'status' => 200, 'fileName' => $fileName]);
+        // }
+        // return response()->json(['message' => 'Tải ảnh thất bại!', 'status' => 401]);
+    }
+
+    public function editUser(Request $request, $id)
+    {
+        $user = User::find($id);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|min:3|max:30',
+                'phoneNumber' => 'required',
+            ],
+            [
+                'name.required' => 'Bạn phải nhập tên người dùng',
+                'phoneNumber.required' => 'Bạn phải nhập số điện thoại',
+            ]
+        );
+        $user->name = $request->name;
+        $user->gender = $request->gender;
+        $user->phone_number = $request->phoneNumber;
+        $user->avatar_link = $request->avatarLink;
+        $user->dob = $request->dob;
+        $user->save();
+        return response()->json(['message' => 'Cập nhật thành công!', 'status' => 200]);
     }
 }
