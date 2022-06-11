@@ -30,7 +30,7 @@ class UserController extends Controller
 
 		);
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-			return redirect('admin/home');
+			return redirect('admin/');
 		} else {
 			return redirect('admin/login')->with('error', 'Đăng nhập không thành công, mời nhập lại!');
 		}
@@ -83,7 +83,7 @@ class UserController extends Controller
 			}
 			$name = $file->getClientOriginalName();
 			$hinhanh = Str::random(3) . "_" . $name;
-			while (file_exists("upload/" . $hinhanh)) {
+			while (file_exists("image/avatar/" . $hinhanh)) {
 				$hinhanh = Str::random(3) . "_" . $name;
 			}
 			$user->avatar_link = $hinhanh;
@@ -134,7 +134,7 @@ class UserController extends Controller
 			}
 			$name = $file->getClientOriginalName();
 			$hinhanh = Str::random(3) . "_" . $name;
-			while (file_exists("upload/" . $hinhanh)) {
+			while (file_exists("image/avatar/" . $hinhanh)) {
 				$hinhanh = Str::random(3) . "_" . $name;
 			}
                 $user->avatar_link = $hinhanh;

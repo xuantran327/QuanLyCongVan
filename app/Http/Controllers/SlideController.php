@@ -44,7 +44,7 @@ class SlideController extends Controller
 			}
 			$name = $file->getClientOriginalName();
 			$hinhanh = Str::random(3) . "_" . $name;
-			while (file_exists("upload/" . $hinhanh)) {
+			while (file_exists("image/slide/" . $hinhanh)) {
 				$hinhanh = Str::random(3) . "_" . $name;
 			}
 			$slide->image = $hinhanh;
@@ -92,7 +92,7 @@ class SlideController extends Controller
 			}
 			$name = $file->getClientOriginalName();
 			$hinhanh = Str::random(3) . "_" . $name;
-			while (file_exists("upload/" . $hinhanh)) {
+			while (file_exists("image/slide/" . $hinhanh)) {
 				$hinhanh = Str::random(3) . "_" . $name;
 			}
                 $slide->image = $hinhanh;

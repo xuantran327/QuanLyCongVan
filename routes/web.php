@@ -30,13 +30,14 @@ Route::get('/', function () {
     // return view('admin.welcome');
 });
 
-Route::get('admin', [UserController::class,'getAdminLogin']);
+// Route::get('admin', [UserController::class,'getAdminLogin']);
 Route::get('admin/login', [UserController::class,'getAdminLogin']);
 Route::post('admin/login', [UserController::class,'postAdminLogin']);
 Route::get('admin/logout', [UserController::class,'getAdminLogout']);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'adminLogin'], function () {
-    Route::get('home', [CongVanController::class,'getList']);
+    Route::get('/', [CongVanController::class,'getList']);
+    Route::get('index', [CongVanController::class,'getList']);
 	Route::group(['prefix' => 'cong-van'], function () {
         Route::get('/', [CongVanController::class,'getList']);
 		Route::get('list', [CongVanController::class,'getList']);

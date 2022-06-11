@@ -11,12 +11,18 @@ use App\Models\LoaiVanBan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class CongVanController extends Controller
 {
     public function getList() {
-		$congvan = CongVan::all();
-        return view('admin.congvan.list', ['congvan' => $congvan]);
+        if (Auth::user()) {
+            $congvan = CongVan::all();
+            return view('admin.congvan.list', ['congvan' => $congvan]);
+        } else {
+            redirect('admin/login');
+        }
+
 
 	}
     public function getAdd() {
@@ -86,7 +92,7 @@ class CongVanController extends Controller
 			}
 			$name = $file->getClientOriginalName();
 			$hinhanh = Str::random(3) . "_" . $name;
-			while (file_exists("upload/" . $hinhanh)) {
+			while (file_exists("image/thumbnail/" . $hinhanh)) {
 				$hinhanh = Str::random(3) . "_" . $name;
 			}
 			$congvan->thumbnail = $hinhanh;
@@ -172,7 +178,7 @@ class CongVanController extends Controller
 			}
 			$name = $file->getClientOriginalName();
 			$hinhanh = Str::random(3) . "_" . $name;
-			while (file_exists("upload/" . $hinhanh)) {
+			while (file_exists("image/thumbnail/" . $hinhanh)) {
 				$hinhanh = Str::random(3) . "_" . $name;
 			}
             $congvan->thumbnail = $hinhanh;
