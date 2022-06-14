@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Models\CongVan;
 use App\Models\LoaiHinhCongVan;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -167,3 +168,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminLogin'], function () {
 // })->middleware(['auth'])->name('dashboard');
 
 // require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+

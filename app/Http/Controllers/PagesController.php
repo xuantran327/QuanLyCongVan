@@ -37,7 +37,11 @@ class PagesController extends Controller
             [
                 'email' => 'required|email:filter',
                 'password' => 'required',
-            ]
+            ],
+            [
+				'email.required' => 'Bạn phải nhập email',
+				'password.required' => 'Bạn phải nhập mật khẩu',
+			]
         );
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -45,7 +49,13 @@ class PagesController extends Controller
             // session(['user' => $user]);
 
             // return response()->json(session()->get('user'));
-            return response()->json(['message' => 'Đăng nhập thành công!', 'status' => 200, 'userId' => Auth::user()->id]);
+            return response()->json([
+                'message' => 'Đăng nhập thành công!',
+                'status' => 200,
+                'userId' => Auth::user()->id,
+                'roleId' => Auth::user()->role_id,
+                'name' => Auth::user()->name,
+            ]);
         } else {
             return response()->json(['message' => 'Đăng nhập không thành công, mời nhập lại!', 'status' => 401]);
         }
@@ -150,5 +160,349 @@ class PagesController extends Controller
         $user->dob = $request->dob;
         $user->save();
         return response()->json(['message' => 'Cập nhật thành công!', 'status' => 200]);
+    }
+
+    public function issuingAgencyList() {
+        $coquanbanhanh = CoQuanBanHanh::orderBy('id', 'asc')->get();
+        return response()->json($coquanbanhanh);
+    }
+
+    public function issuingAgencySearch($search) {
+        $coquanbanhanh = CoQuanBanHanh::where('name', 'LIKE', '%' . $search . '%')->orderBy('id', 'asc')->get();
+        return response()->json($coquanbanhanh);
+    }
+    public function getIssuingAgency($id) {
+        $coquanbanhanh = CoQuanBanHanh::find($id);
+        return response()->json($coquanbanhanh);
+    }
+    public function addIssuingAgency(Request $request) {
+        $this->validate($request,
+			[
+				'name' => 'required|unique:co_quan_ban_hanh,name',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên cơ quan ban hành',
+				'name.unique' => 'Tên cơ quan ban hành đã tồn tại',
+			]);
+            $coquanbanhanh = new CoQuanBanHanh;
+            $coquanbanhanh->name = $request->name;
+		$coquanbanhanh->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$coquanbanhanh->save();
+
+		return response()->json(['message' => 'Thêm cơ quan ban hành thành công!', 'status' => 200]);
+    }
+    public function editIssuingAgency(Request $request, $id) {
+        $coquanbanhanh = CoQuanBanHanh::find($id);
+        $this->validate($request,
+			[
+				'name' => 'required|unique:co_quan_ban_hanh,name',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên cơ quan ban hành',
+				'name.unique' => 'Tên cơ quan ban hành đã tồn tại',
+			]);
+
+            $coquanbanhanh->name = $request->name;
+		$coquanbanhanh->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$coquanbanhanh->save();
+
+		return response()->json(['message' => 'Sửa cơ quan ban hành thành công!', 'status' => 200]);
+    }
+
+    public function documentFormList() {
+        $hinhthucvanban = HinhThucVanBan::orderBy('id', 'asc')->get();
+        return response()->json($hinhthucvanban);
+    }
+
+    public function documentFormSearch($search) {
+        $hinhthucvanban = HinhThucVanBan::where('name', 'LIKE', '%' . $search . '%')->orderBy('id', 'asc')->get();
+        return response()->json($hinhthucvanban);
+    }
+
+    public function getDocumentForm($id) {
+        $hinhthucvanban = HinhThucVanBan::find($id);
+        return response()->json($hinhthucvanban);
+    }
+
+    public function addDocumentForm(Request $request) {
+        $this->validate($request,
+			[
+				'name' => 'required|unique:hinh_thuc_van_ban,name|min:3|max:30',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên hình thức văn bản',
+				'name.unique' => 'Tên hình thức văn bản đã tồn tại',
+				'name.min' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+				'name.max' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+			]);
+            $hinhthucvanban = new HinhThucVanBan;
+            $hinhthucvanban->name = $request->name;
+		$hinhthucvanban->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$hinhthucvanban->save();
+
+		return response()->json(['message' => 'Thêm hình thức văn bản thành công!', 'status' => 200]);
+    }
+
+    public function editDocumentForm(Request $request, $id) {
+        $hinhthucvanban = HinhThucVanBan::find($id);
+        $this->validate($request,
+			[
+				'name' => 'required|unique:hinh_thuc_van_ban,name|min:3|max:30',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên hình thức văn bản',
+				'name.unique' => 'Tên hình thức văn bản đã tồn tại',
+				'name.min' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+				'name.max' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+			]);
+
+            $hinhthucvanban->name = $request->name;
+		$hinhthucvanban->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$hinhthucvanban->save();
+
+		return response()->json(['message' => 'Sửa hình thức văn bản thành công!', 'status' => 200]);
+    }
+
+    public function fieldList() {
+        $linhvuc = LinhVuc::orderBy('id', 'asc')->get();
+        return response()->json($linhvuc);
+    }
+
+    public function fieldSearch($search) {
+        $linhvuc = LinhVuc::where('name', 'LIKE', '%' . $search . '%')->orderBy('id', 'asc')->get();
+        return response()->json($linhvuc);
+    }
+
+    public function getField($id) {
+        $linhvuc = LinhVuc::find($id);
+        return response()->json($linhvuc);
+    }
+
+    public function addField(Request $request) {
+        $this->validate($request,
+			[
+				'name' => 'required|unique:linh_vuc,name|min:3|max:30',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên lĩnh vực',
+				'name.unique' => 'Tên lĩnh vực đã tồn tại',
+				'name.min' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+				'name.max' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+			]);
+            $linhvuc = new LinhVuc;
+            $linhvuc->name = $request->name;
+		$linhvuc->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$linhvuc->save();
+
+		return response()->json(['message' => 'Thêm lĩnh vực thành công!', 'status' => 200]);
+    }
+
+    public function editField(Request $request, $id) {
+        $linhvuc = LinhVuc::find($id);
+        $this->validate($request,
+			[
+				'name' => 'required|unique:linh_vuc,name|min:3|max:30',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên lĩnh vực',
+				'name.unique' => 'Tên lĩnh vực đã tồn tại',
+				'name.min' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+				'name.max' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+			]);
+
+            $linhvuc->name = $request->name;
+		$linhvuc->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$linhvuc->save();
+
+		return response()->json(['message' => 'Sửa lĩnh vực thành công!', 'status' => 200]);
+    }
+
+    public function documentTypeList() {
+        $loaivanban = LoaiVanBan::orderBy('id', 'asc')->get();
+        return response()->json($loaivanban);
+    }
+
+    public function documentTypeSearch($search) {
+        $loaivanban = LoaiVanBan::where('name', 'LIKE', '%' . $search . '%')->orderBy('id', 'asc')->get();
+        return response()->json($loaivanban);
+    }
+
+    public function getDocumentType($id) {
+        $loaivanban = LoaiVanBan::find($id);
+        return response()->json($loaivanban);
+    }
+
+    public function addDocumentType(Request $request) {
+        $this->validate($request,
+			[
+				'name' => 'required|unique:loai_van_ban,name|min:3|max:30',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên loại văn bản',
+				'name.unique' => 'Tên loại văn bản đã tồn tại',
+				'name.min' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+				'name.max' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+			]);
+            $loaivanban = new LoaiVanBan;
+            $loaivanban->name = $request->name;
+		$loaivanban->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$loaivanban->save();
+
+		return response()->json(['message' => 'Thêm loại văn bản thành công!', 'status' => 200]);
+    }
+
+    public function editDocumentType(Request $request, $id) {
+        $loaivanban = LoaiVanBan::find($id);
+        $this->validate($request,
+			[
+				'name' => 'required|unique:loai_van_ban,name|min:3|max:30',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên loại văn bản',
+				'name.unique' => 'Tên loại văn bản đã tồn tại',
+				'name.min' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+				'name.max' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+			]);
+
+            $loaivanban->name = $request->name;
+		$loaivanban->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$loaivanban->save();
+
+		return response()->json(['message' => 'Sửa loại văn bản thành công!', 'status' => 200]);
+    }
+
+    public function dispatchTypeList() {
+        $loaihinhcongvan = LoaiHinhCongVan::orderBy('id', 'asc')->get();
+        return response()->json($loaihinhcongvan);
+    }
+
+    public function dispatchTypeSearch($search) {
+        $loaihinhcongvan = LoaiHinhCongVan::where('name', 'LIKE', '%' . $search . '%')->orderBy('id', 'asc')->get();
+        return response()->json($loaihinhcongvan);
+    }
+
+    public function getDispatchType($id) {
+        $loaihinhcongvan = LoaiHinhCongVan::find($id);
+        return response()->json($loaihinhcongvan);
+    }
+
+    public function addDispatchType(Request $request) {
+        $this->validate($request,
+			[
+				'name' => 'required|unique:loai_hinh_cong_van,name|min:3|max:30',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên loại hình công văn',
+				'name.unique' => 'Tên loại hình công văn đã tồn tại',
+				'name.min' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+				'name.max' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+			]);
+            $loaihinhcongvan = new LoaiHinhCongVan;
+            $loaihinhcongvan->name = $request->name;
+		$loaihinhcongvan->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$loaihinhcongvan->save();
+
+		return response()->json(['message' => 'Thêm loại hình công văn thành công!', 'status' => 200]);
+    }
+
+    public function editDispatchType(Request $request, $id) {
+        $loaihinhcongvan = LoaiHinhCongVan::find($id);
+        $this->validate($request,
+			[
+				'name' => 'required|unique:loai_hinh_cong_van,name|min:3|max:30',
+			],
+			[
+				'name.required' => 'Bạn phải nhập tên loại hình công văn',
+				'name.unique' => 'Tên loại hình công văn đã tồn tại',
+				'name.min' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+				'name.max' => 'Bạn phải nhập tên lớn từ 3 đến 30 ký tự',
+			]);
+
+            $loaihinhcongvan->name = $request->name;
+		$loaihinhcongvan->ten_khong_dau = Str::slug($request->name, '-', 'en');
+		$loaihinhcongvan->save();
+
+		return response()->json(['message' => 'Sửa loại hình công văn thành công!', 'status' => 200]);
+    }
+
+    public function slideList() {
+        $slide = Slide::orderBy('updated_at', 'desc')->get();
+        return response()->json($slide);
+    }
+
+    public function slideSearch($search) {
+        $slide = Slide::where('name', 'LIKE', '%' . $search . '%')->orderBy('updated_at', 'desc')->get();
+        return response()->json($slide);
+    }
+
+    public function getSlide($id) {
+        $slide = Slide::find($id);
+        return response()->json($slide);
+    }
+
+    public function uploadSlide(Request $request)
+    {
+
+            $base64 = $request->base64;
+            $fileName = $request->fileName;
+            file_put_contents('image/slide/'.$fileName, base64_decode($base64));
+
+            return response()->json(['message' => 'Tải ảnh thành công!', 'status' => 200, 'fileName' => $fileName]);
+        // }
+        // return response()->json(['message' => 'Tải ảnh thất bại!', 'status' => 401]);
+    }
+
+    public function addSlide(Request $request) {
+        $this->validate($request,
+			[
+
+				'name' => 'required',
+
+			],
+			[
+				'name.required' => 'Bạn chưa nhập tên ảnh',
+
+			]);
+            $slide = new Slide;
+            $slide->name = $request->name;
+		$slide->image = $request->imageLink;
+		$slide->save();
+
+		return response()->json(['message' => 'Thêm slide thành công!', 'status' => 200]);
+    }
+
+    public function editSlide(Request $request, $id) {
+        $slide = Slide::find($id);
+        $this->validate($request,
+			[
+
+				'name' => 'required',
+
+			],
+			[
+				'name.required' => 'Bạn chưa nhập tên ảnh',
+
+			]);
+
+            $slide->name = $request->name;
+		$slide->image = $request->imageLink;
+		$slide->save();
+
+		return response()->json(['message' => 'Sửa slide thành công!', 'status' => 200]);
+    }
+
+    public function deleteIssuingAgency($id) {
+        $coquanbanhanh = CoQuanBanHanh::find($id);
+        $kiemtrakhoangoai = CongVan::where('id_co_quan_ban_hanh', $id)->get();
+		$soluong = count($kiemtrakhoangoai);
+        if ($soluong) {
+            return response()->json([
+                'message' => 'Không được phép xoá danh mục này vì đang có ' . $soluong . ' công văn đang sử dụng danh mục. Vui lòng tìm và xoá toàn bộ những công văn đó trước!',
+                'status' => 401,
+            ]);
+        } else {
+            $coquanbanhanh->delete();
+        }
+        return response()->json(['message' => 'Xoá thành công!', 'status' => 200]);
     }
 }
