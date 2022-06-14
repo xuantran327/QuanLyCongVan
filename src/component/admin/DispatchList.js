@@ -1,35 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  RefreshControl,
-} from 'react-native';
-import {useNavigation, useIsFocused} from '@react-navigation/native';
+import {FlatList, Text, TouchableOpacity, View, Image} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 
-import {getDateTime} from '../../function';
-import {ipAddress} from '../../function';
+import {getDateTime} from '../../../function';
+import {ipAddress} from '../../../function';
 
-import {styles} from '../../styles';
+import {styles} from '../../../styles';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const DispatchList = props => {
-  const isFocused = useIsFocused();
-  const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => {
-      setRefreshing(false);
-    });
-  }, []);
-  const wait = timeout => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  };
   const IP_ADDRESS = ipAddress();
   const navigation = useNavigation();
   const [selectedId, setSelectedId] = useState(null);
@@ -37,7 +19,10 @@ const DispatchList = props => {
   const [isLoaded, setIsLoaded] = useState(false);
   const navigateDispatchDetails = selectedId => {
     setSelectedId(selectedId);
-    navigation.navigate('Chi tiết công văn', {dispatchId: selectedId});
+    navigation.navigate('AdminUpdateDispatch', {
+      dispatchId: selectedId,
+      option: 'Edit',
+    });
   };
   const Item = ({item, onPress, backgroundColor, textColor}) => (
     <TouchableOpacity
@@ -91,8 +76,7 @@ const DispatchList = props => {
       ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-list/`
       : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-list/` +
         props.search;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchDispatchList = () => {
+  useEffect(() => {
     fetch(url, {
       method: 'GET',
       headers: {
@@ -103,14 +87,10 @@ const DispatchList = props => {
       .then(response => response.json())
       .then(dispatch => {
         setDispatch(dispatch);
-        // console.log(dispatch);
+        console.log(dispatch);
         setIsLoaded(true);
       });
-  };
-  useEffect(fetchDispatchList, [url, isFocused]);
-  useEffect(() => {
-    if (refreshing) fetchDispatchList();
-  }, [fetchDispatchList, refreshing]);
+  }, [url]);
   const renderItem = ({item}) => {
     return (
       <Item item={item} onPress={() => navigateDispatchDetails(item.id)} />
@@ -124,9 +104,6 @@ const DispatchList = props => {
       extraData={selectedId}
       style={[s.mt2]}
       showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
     />
   );
 };

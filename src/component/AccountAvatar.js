@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Image} from 'react-native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {useIsFocused} from '@react-navigation/native';
 
 import {styles} from '../../styles';
 import {ipAddress} from '../../function';
@@ -10,10 +10,12 @@ const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const AccountAvatar = props => {
+  const isFocused = useIsFocused();
   const IP_ADDRESS = ipAddress();
   const [data, setData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchAccountAvatar = () => {
     fetch(
       `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/user/` + props.id,
       {
@@ -32,7 +34,11 @@ const AccountAvatar = props => {
         setIsLoaded(true);
         // console.log(array);
       });
-  }, [IP_ADDRESS, props.id]);
+  };
+  useEffect(fetchAccountAvatar, [IP_ADDRESS, props.id, isFocused]);
+  useEffect(() => {
+    if (props.refreshing) fetchAccountAvatar();
+  }, [fetchAccountAvatar, props.refreshing]);
   if (!isLoaded) {
     return (
       <View style={[s.flexRow, s.justifyContentStart, s.m3]}>

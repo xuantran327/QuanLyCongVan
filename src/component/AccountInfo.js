@@ -5,15 +5,12 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  Platform,
-  Button,
   SafeAreaView,
   Alert,
 } from 'react-native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import DatePicker from 'react-native-date-picker';
-import {useNavigation} from '@react-navigation/native';
 
 import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
 
@@ -25,7 +22,6 @@ const {s, c} = bootstrapStyleSheet;
 
 const AccountInfo = props => {
   const IP_ADDRESS = ipAddress();
-  const navigation = useNavigation();
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [data, setData] = useState([]);
@@ -103,10 +99,20 @@ const AccountInfo = props => {
     )
       .then(res => res.json())
       .then(resData => {
-        Alert.alert('Thông báo', resData.message);
-        handleUploadPhoto(base64, fileName);
-        // console.log(fileName);
-        // navigation.navigate('HomeContainer', {userId: props.id});
+        if (resData.errors) {
+          let errorArray = Object.values(resData.errors);
+          let errorString = '';
+          for (let key in errorArray) {
+            errorString += errorArray[key][0];
+            if (key != errorArray.length) {
+              errorString += '\n';
+            }
+          }
+          Alert.alert('Thông báo', errorString);
+        } else {
+          Alert.alert('Thông báo', resData.message);
+          handleUploadPhoto(base64, fileName);
+        }
       })
       .catch(error => {
         Alert.alert('Error', error.message);
@@ -317,7 +323,6 @@ const AccountInfo = props => {
                     />
                   </TouchableOpacity>
                 </View>
-                {/* {show && ( */}
                 <DatePicker
                   modal
                   open={show}
@@ -334,7 +339,6 @@ const AccountInfo = props => {
                   mode="date"
                   locale="vi"
                 />
-                {/* )} */}
                 <Text
                   style={[styles.fontSize16, s.my2, s.fontWeightBold, s.ml2]}>
                   Giới tính

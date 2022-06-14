@@ -18,7 +18,9 @@ const Tab = createBottomTabNavigator();
 
 const HomeContainer = route => {
   const userId = Object.values(route)[1].params.userId;
-  // console.log(userId);
+  const roleId = Object.values(route)[1].params.roleId;
+  const name = Object.values(route)[1].params.name;
+  console.log(Object.values(route)[1].params);
   return (
     <Tab.Navigator
       initialRouteName="Trang chủ"
@@ -43,7 +45,7 @@ const HomeContainer = route => {
       <Tab.Screen
         name="Tài khoản"
         component={AccountScreen}
-        initialParams={{userId: userId}}
+        initialParams={{userId: userId, roleId: roleId, name: name}}
         options={{
           tabBarIcon: ({color, size}) => (
             <FontAwesomeIcon icon={faUser} color={color} size={size} />

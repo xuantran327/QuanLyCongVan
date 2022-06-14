@@ -10,6 +10,23 @@ import SplashScreen from '../../screens/SplashScreen';
 import AccountInfoScreen from '../../screens/AccountInfoScreen';
 import IntroductionScreen from '../../screens/IntroductionScreen';
 import ContactScreen from '../../screens/ContactScreen';
+import ForgotPasswordScreen from '../../screens/ForgotPasswordScreen';
+
+import HomeScreen from '../../screens/admin/HomeScreen';
+import DispatchListScreen from '../../screens/admin/DispatchListScreen';
+import UpdateDispatchScreen from '../../screens/admin/UpdateDispatchScreen';
+import IssuingAgencyListScreen from '../../screens/admin/IssuingAgencyListScreen';
+import UpdateIssuingAgencyScreen from '../../screens/admin/UpdateIssuingAgencyScreen';
+import DocumentFormListScreen from '../../screens/admin/DocumentFormListScreen';
+import UpdateDocumentFormScreen from '../../screens/admin/UpdateDocumentFormScreen';
+import FieldListScreen from '../../screens/admin/FieldListScreen';
+import UpdateFieldScreen from '../../screens/admin/UpdateFieldScreen';
+import DocumentTypeListScreen from '../../screens/admin/DocumentTypeListScreen';
+import UpdateDocumentTypeScreen from '../../screens/admin/UpdateDocumentTypeScreen';
+import DispatchTypeListScreen from '../../screens/admin/DispatchTypeListScreen';
+import UpdateDispatchTypeScreen from '../../screens/admin/UpdateDispatchTypeScreen';
+import SlideListScreen from '../../screens/admin/SlideListScreen';
+import UpdateSlideScreen from '../../screens/admin/UpdateSlideScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +66,11 @@ const StackNavigator = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPasswordScreen}
+          options={{title: 'Nhập email'}}
+        />
+        <Stack.Screen
           name="HomeContainer"
           component={HomeContainer}
           options={{headerShown: false}}
@@ -70,6 +92,81 @@ const StackNavigator = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen name="Thông tin cá nhân" component={AccountInfoScreen} />
+        <Stack.Screen
+          name="AdminHome"
+          component={HomeScreen}
+          options={{title: 'Quản lý công văn'}}
+        />
+        <Stack.Screen
+          name="AdminDispatchList"
+          component={DispatchListScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AdminUpdateDispatch"
+          component={UpdateDispatchScreen}
+          options={{title: 'Cập nhật công văn'}}
+        />
+        <Stack.Screen
+          name="AdminIssuingAgencyList"
+          component={IssuingAgencyListScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AdminUpdateIssuingAgency"
+          component={UpdateIssuingAgencyScreen}
+          options={{title: 'Cập nhật cơ quan ban hành'}}
+        />
+        <Stack.Screen
+          name="AdminDocumentFormList"
+          component={DocumentFormListScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AdminUpdateDocumentForm"
+          component={UpdateDocumentFormScreen}
+          options={{title: 'Cập nhật hình thức văn bản'}}
+        />
+        <Stack.Screen
+          name="AdminFieldList"
+          component={FieldListScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AdminUpdateField"
+          component={UpdateFieldScreen}
+          options={{title: 'Cập nhật lĩnh vực'}}
+        />
+        <Stack.Screen
+          name="AdminDocumentTypeList"
+          component={DocumentTypeListScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AdminUpdateDocumentType"
+          component={UpdateDocumentTypeScreen}
+          options={{title: 'Cập nhật loại văn bản'}}
+        />
+        <Stack.Screen
+          name="AdminDispatchTypeList"
+          component={DispatchTypeListScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AdminUpdateDispatchType"
+          component={UpdateDispatchTypeScreen}
+          options={{title: 'Cập nhật loại hình công văn'}}
+        />
+        <Stack.Screen
+          name="AdminSlideList"
+          component={SlideListScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AdminUpdateSlide"
+          component={UpdateSlideScreen}
+          options={{title: 'Cập nhật slide'}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

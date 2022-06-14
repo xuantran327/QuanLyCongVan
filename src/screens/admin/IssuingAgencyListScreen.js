@@ -9,20 +9,21 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faSearch} from '@fortawesome/free-solid-svg-icons/faSearch';
 import {faClose} from '@fortawesome/free-solid-svg-icons/faClose';
 import {faChevronLeft} from '@fortawesome/free-solid-svg-icons/faChevronLeft';
+import {faAdd} from '@fortawesome/free-solid-svg-icons/faAdd';
 
-import {styles} from '../../styles';
-import DispatchList from '../component/DispatchList';
+import {styles} from '../../../styles';
+import IssuingAgencyList from '../../component/admin/IssuingAgencyList';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const DispatchScreen = () => {
+const IssuingAgencyListScreen = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   return (
     <View style={{width: '100%', height: '100%'}}>
       <SearchBar
-        placeholder="Tìm công văn..."
+        placeholder="Tìm cơ quan ban hành..."
         onChangeText={value => setSearch(value)}
         value={search}
         searchIcon={
@@ -48,7 +49,16 @@ const DispatchScreen = () => {
         lightTheme={true}
         round={true}
       />
-      <DispatchList search={search} />
+      <IssuingAgencyList search={search} />
+      <FAB
+        onPress={() =>
+          navigation.navigate('AdminUpdateIssuingAgency', {option: 'Add'})
+        }
+        title={<FontAwesomeIcon icon={faAdd} style={{color: 'white'}} />}
+        color="green"
+        placement="left"
+        style={{position: 'absolute', bottom: 60}}
+      />
       <FAB
         onPress={() => navigation.goBack()}
         title={
@@ -60,4 +70,4 @@ const DispatchScreen = () => {
     </View>
   );
 };
-export default DispatchScreen;
+export default IssuingAgencyListScreen;

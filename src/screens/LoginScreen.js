@@ -28,10 +28,24 @@ const LoginScreen = () => {
       .then(res => res.json())
       .then(resData => {
         console.log(resData);
-        showAlert(resData.message);
+        if (resData.errors) {
+          let errorArray = Object.values(resData.errors);
+          let errorString = '';
+          for (let key in errorArray) {
+            errorString += errorArray[key][0];
+            if (key != errorArray.length) {
+              errorString += '\n';
+            }
+          }
+          showAlert(errorString);
+        }
         if (resData.status == 200) {
-          navigation.navigate('HomeContainer', {userId: resData.userId});
-          // navigation.navigate('HomeContainer');
+          showAlert(resData.message);
+          navigation.navigate('HomeContainer', {
+            userId: resData.userId,
+            roleId: resData.roleId,
+            name: resData.name,
+          });
         }
       })
       .catch(error => {
@@ -70,6 +84,19 @@ const LoginScreen = () => {
           onChangeText={value => setPassword(value)}
         />
       </View>
+      <TouchableOpacity
+        style={[s.mb4, s.mr3]}
+        onPress={() => navigation.navigate('ForgotPassword')}>
+        <Text
+          style={[
+            styles.textGreen,
+            s.fontWeightBold,
+            s.alignSelfEnd,
+            styles.fontSize16,
+          ]}>
+          Quên mật khẩu?
+        </Text>
+      </TouchableOpacity>
       <TouchableOpacity style={[styles.loginBtn]} onPress={loginCheck}>
         <Text style={styles.loginText}>Đăng nhập</Text>
       </TouchableOpacity>

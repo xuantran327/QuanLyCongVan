@@ -1,12 +1,20 @@
 import * as React from 'react';
-import {View, Text, Image, TouchableOpacity, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useNavigation} from '@react-navigation/native';
 
 import AccountAvatar from '../component/AccountAvatar';
 
-import {faChevronRight} from '@fortawesome/free-solid-svg-icons/faChevronRight';
+import {faFile} from '@fortawesome/free-solid-svg-icons/faFile';
 import {faInfoCircle} from '@fortawesome/free-solid-svg-icons/faInfoCircle';
 import {faContactBook} from '@fortawesome/free-solid-svg-icons/faContactBook';
 import {faSync} from '@fortawesome/free-solid-svg-icons/faSync';
@@ -21,6 +29,8 @@ const {s, c} = bootstrapStyleSheet;
 const AccountScreen = props => {
   const IP_ADDRESS = ipAddress();
   const userId = Object.values(props)[1].params.userId;
+  const roleId = Object.values(props)[1].params.roleId;
+  const name = Object.values(props)[1].params.name;
   // console.log(userId);
   const navigation = useNavigation();
   let logOut = () => {
@@ -43,9 +53,23 @@ const AccountScreen = props => {
         Alert.alert('Error', error.message);
       });
   };
+  const [refreshing, setRefreshing] = React.useState(false);
+  // console.log(refreshing);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false);
+    });
+  }, []);
+  const wait = timeout => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  };
   return (
-    <View>
-      <AccountAvatar id={userId} />
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
+      <AccountAvatar id={userId} refreshing={refreshing} />
       <TouchableOpacity
         onPress={() =>
           props.navigation.navigate('Thông tin cá nhân', {userId: userId})
@@ -67,6 +91,40 @@ const AccountScreen = props => {
           </Text>
         </View>
       </TouchableOpacity>
+      {roleId <= 2 ? (
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate('AdminHome', {
+              userId: userId,
+              roleId: roleId,
+              name: name,
+            })
+          }
+          style={[
+            s.p3,
+            s.mx3,
+            s.my1,
+            s.bgWhite,
+            s.flexRow,
+            s.justifyContentStart,
+            s.roundedLg,
+          ]}>
+          <View style={[s.flexRow, s.justifyContentBetween]}>
+            <FontAwesomeIcon icon={faFile} style={[s.mt1, s.mr3, s.ml1]} />
+            <Text
+              style={[
+                s.fontWeightBold,
+                styles.fontSize16,
+                s.pr4,
+                s.mb1,
+                s.mr1,
+              ]}>
+              Quản lý công văn
+            </Text>
+          </View>
+        </TouchableOpacity>
+      ) : null}
+
       <TouchableOpacity
         onPress={() => props.navigation.navigate('Giới thiệu')}
         style={[
@@ -161,7 +219,7 @@ const AccountScreen = props => {
           </Text>
         </View>
       </TouchableOpacity> */}
-    </View>
+    </ScrollView>
   );
 };
 export default AccountScreen;

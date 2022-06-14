@@ -9,14 +9,15 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faSearch} from '@fortawesome/free-solid-svg-icons/faSearch';
 import {faClose} from '@fortawesome/free-solid-svg-icons/faClose';
 import {faChevronLeft} from '@fortawesome/free-solid-svg-icons/faChevronLeft';
+import {faAdd} from '@fortawesome/free-solid-svg-icons/faAdd';
 
-import {styles} from '../../styles';
-import DispatchList from '../component/DispatchList';
+import {styles} from '../../../styles';
+import DispatchList from '../../component/admin/DispatchList';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const DispatchScreen = () => {
+const DispatchListScreen = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   return (
@@ -50,6 +51,15 @@ const DispatchScreen = () => {
       />
       <DispatchList search={search} />
       <FAB
+        onPress={() =>
+          navigation.navigate('AdminUpdateDispatch', {option: 'Add'})
+        }
+        title={<FontAwesomeIcon icon={faAdd} style={{color: 'white'}} />}
+        color="green"
+        placement="left"
+        style={{position: 'absolute', bottom: 60}}
+      />
+      <FAB
         onPress={() => navigation.goBack()}
         title={
           <FontAwesomeIcon icon={faChevronLeft} style={{color: 'white'}} />
@@ -60,4 +70,4 @@ const DispatchScreen = () => {
     </View>
   );
 };
-export default DispatchScreen;
+export default DispatchListScreen;

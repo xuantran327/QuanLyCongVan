@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
 // import moment from 'moment';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -12,7 +12,8 @@ import {getDateTime, ipAddress} from '../../function';
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const NewDispatch = () => {
+const NewDispatch = props => {
+  const isFocused = useIsFocused();
   const IP_ADDRESS = ipAddress();
   const navigation = useNavigation();
   const [dispatch, setDispatch] = useState([]);
@@ -20,7 +21,8 @@ const NewDispatch = () => {
   const moveToDispatchDetails = id => {
     navigation.navigate('Chi tiết công văn', {dispatchId: id});
   };
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchNewDispatch = () => {
     fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/new-dispatch`, {
       method: 'GET',
       headers: {
@@ -31,10 +33,14 @@ const NewDispatch = () => {
       .then(response => response.json())
       .then(dispatch => {
         setDispatch(dispatch);
-        // console.log(dispatch.length);
+        // console.log(dispatch);
         setIsLoaded(true);
       });
-  }, [IP_ADDRESS]);
+  };
+  useEffect(fetchNewDispatch, [IP_ADDRESS, isFocused]);
+  useEffect(() => {
+    if (props.refreshing) fetchNewDispatch();
+  }, [fetchNewDispatch, props.refreshing]);
   if (!isLoaded) {
     return (
       <View>
@@ -64,9 +70,7 @@ const NewDispatch = () => {
                 resizeMode="cover"
                 style={{width: '100%', height: 200}}
                 source={{
-                  uri:
-                    `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/` +
-                    item.thumbnail,
+                  uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/${item.thumbnail}`,
                 }}
               />
               <Text

@@ -1,33 +1,36 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  Alert,
-} from 'react-native';
+import React from 'react';
+import {Text, TouchableOpacity, RefreshControl} from 'react-native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {Card} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
-
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronRight} from '@fortawesome/free-solid-svg-icons/faChevronRight';
-import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
 
 import {styles} from '../../styles';
 import Slide from '../component/Slide';
 import NewDispatch from '../component/NewDispatch';
+// import {fetchSlide} from '../component/Slide';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const HomeScreen = props => {
-  const navigation = useNavigation();
+  const [refreshing, setRefreshing] = React.useState(false);
+  // console.log(refreshing);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false);
+    });
+  }, []);
+  const wait = timeout => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  };
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <Slide />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
+      <Slide refreshing={refreshing} />
       <Card
         style={{borderRadius: 30}}
         containerStyle={{
@@ -50,7 +53,7 @@ const HomeScreen = props => {
           </TouchableOpacity>
         </Card.Title>
         <Card.Divider style={[styles.separator]} />
-        <NewDispatch />
+        <NewDispatch refreshing={refreshing} />
       </Card>
     </ScrollView>
   );

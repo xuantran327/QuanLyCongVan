@@ -4,21 +4,19 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image,
   RefreshControl,
 } from 'react-native';
 import {useNavigation, useIsFocused} from '@react-navigation/native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 
-import {getDateTime} from '../../function';
-import {ipAddress} from '../../function';
+import {ipAddress} from '../../../function';
 
-import {styles} from '../../styles';
+import {styles} from '../../../styles';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const DispatchList = props => {
+const DocumentFormList = props => {
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
@@ -33,11 +31,13 @@ const DispatchList = props => {
   const IP_ADDRESS = ipAddress();
   const navigation = useNavigation();
   const [selectedId, setSelectedId] = useState(null);
-  const [dispatch, setDispatch] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const navigateDispatchDetails = selectedId => {
+  const [data, setData] = useState([]);
+  const navigateDocumentFormDetails = selectedId => {
     setSelectedId(selectedId);
-    navigation.navigate('Chi tiết công văn', {dispatchId: selectedId});
+    navigation.navigate('AdminUpdateDocumentForm', {
+      documentFormId: selectedId,
+      option: true,
+    });
   };
   const Item = ({item, onPress, backgroundColor, textColor}) => (
     <TouchableOpacity
@@ -52,47 +52,18 @@ const DispatchList = props => {
         s.roundedLg,
       ]}>
       <View>
-        <View style={[s.flexRow, s.justifyContentStart, s.alignItemsCenter]}>
-          <Image
-            resizeMode="cover"
-            style={{
-              width: '30%',
-              height: undefined,
-              aspectRatio: 4 / 3,
-            }}
-            source={{
-              uri:
-                `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/` +
-                item.thumbnail,
-            }}
-          />
-          <View style={{marginLeft: 10, width: '70%'}}>
-            <Text
-              style={[
-                s.fontWeightBold,
-                styles.fontSize16,
-                styles.textAlignJustify,
-                s.pr4,
-                s.mb1,
-                s.mr1,
-              ]}>
-              {item.trich_yeu_noi_dung}
-            </Text>
-            <Text style={[s.mt1]}>
-              Cập nhật: {getDateTime(item.updated_at)}
-            </Text>
-          </View>
+        <View style={[s.alignItemsCenter, s.px1]}>
+          <Text style={[s.fontWeightBold, styles.fontSize16]}>{item.name}</Text>
         </View>
       </View>
     </TouchableOpacity>
   );
   let url =
     props.search == '' || props.search == null
-      ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-list/`
-      : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-list/` +
-        props.search;
+      ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-form/list/`
+      : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-form/search/${props.search}`;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchDispatchList = () => {
+  const fetchDocumentFormList = () => {
     fetch(url, {
       method: 'GET',
       headers: {
@@ -101,24 +72,22 @@ const DispatchList = props => {
       },
     })
       .then(response => response.json())
-      .then(dispatch => {
-        setDispatch(dispatch);
-        // console.log(dispatch);
-        setIsLoaded(true);
+      .then(data => {
+        setData(data);
       });
   };
-  useEffect(fetchDispatchList, [url, isFocused]);
+  useEffect(fetchDocumentFormList, [url, isFocused]);
   useEffect(() => {
-    if (refreshing) fetchDispatchList();
-  }, [fetchDispatchList, refreshing]);
+    if (refreshing) fetchDocumentFormList();
+  }, [fetchDocumentFormList, refreshing]);
   const renderItem = ({item}) => {
     return (
-      <Item item={item} onPress={() => navigateDispatchDetails(item.id)} />
+      <Item item={item} onPress={() => navigateDocumentFormDetails(item.id)} />
     );
   };
   return (
     <FlatList
-      data={dispatch}
+      data={data}
       renderItem={renderItem}
       keyExtractor={item => item.id}
       extraData={selectedId}
@@ -131,4 +100,4 @@ const DispatchList = props => {
   );
 };
 
-export default DispatchList;
+export default DocumentFormList;

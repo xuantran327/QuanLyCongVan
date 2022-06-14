@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, Image, Alert} from 'react-native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {ScrollView} from 'react-native-gesture-handler';
+import {useIsFocused} from '@react-navigation/native';
 
 import {styles} from '../../styles';
 import {ipAddress} from '../../function';
@@ -9,7 +10,8 @@ import {ipAddress} from '../../function';
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const Slide = () => {
+const Slide = props => {
+  const isFocused = useIsFocused();
   const IP_ADDRESS = ipAddress();
   const [image, setImage] = useState([]);
   const [imgActive, setImgActive] = useState(0);
@@ -24,7 +26,8 @@ const Slide = () => {
       }
     }
   };
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchSlide = () => {
     fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide`, {
       method: 'GET',
       headers: {
@@ -35,10 +38,14 @@ const Slide = () => {
       .then(response => response.json())
       .then(image => {
         setImage(image);
-        console.log(image);
+        // console.log(image);
         setIsLoaded(true);
       });
-  }, [IP_ADDRESS]);
+  };
+  useEffect(fetchSlide, [IP_ADDRESS, isFocused]);
+  useEffect(() => {
+    if (props.refreshing) fetchSlide();
+  }, [fetchSlide, props.refreshing]);
   if (!isLoaded) {
     return (
       <View
