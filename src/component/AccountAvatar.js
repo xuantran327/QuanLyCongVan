@@ -49,7 +49,7 @@ const AccountAvatar = props => {
             borderRadius: 40,
           }}
           source={require('../../img/default-avatar.png')}
-          resizeMode="contain"
+          resizeMode="cover"
         />
         <View style={[s.justifyContentCenter, s.ml3]}>
           <Text style={[s.fontWeightBold, styles.fontSize20]}>Đang tải...</Text>

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {useNavigation} from '@react-navigation/native';
+import DatePicker from 'react-native-date-picker';
 
 import {styles} from '../../../styles';
 import {ipAddress, getExtension} from '../../../function';

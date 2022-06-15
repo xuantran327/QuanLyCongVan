@@ -46,7 +46,7 @@ export const getDateAlt = dt => {
   );
 };
 export const ipAddress = () => {
-  const IP_ADDRESS = '192.168.1.5';
+  const IP_ADDRESS = '192.168.43.70';
   return IP_ADDRESS.toString();
 };
 export const getExtension = fileName => {

@@ -52,7 +52,7 @@ const DispatchListScreen = () => {
       <DispatchList search={search} />
       <FAB
         onPress={() =>
-          navigation.navigate('AdminUpdateDispatch', {option: 'Add'})
+          navigation.navigate('AdminUpdateDispatch', {option: false})
         }
         title={<FontAwesomeIcon icon={faAdd} style={{color: 'white'}} />}
         color="green"

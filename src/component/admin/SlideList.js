@@ -6,12 +6,16 @@ import {
   View,
   RefreshControl,
   Image,
+  Alert,
 } from 'react-native';
 import {useNavigation, useIsFocused} from '@react-navigation/native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import Dialog from 'react-native-dialog';
+
+import {faTrash} from '@fortawesome/free-solid-svg-icons/faTrash';
 
 import {ipAddress} from '../../../function';
-
 import {styles} from '../../../styles';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
@@ -40,6 +44,36 @@ const SlideList = props => {
       option: true,
     });
   };
+  const [visible, setVisible] = useState(false);
+  const [id, setId] = useState(1);
+  const showDialog = selectedId => {
+    setId(selectedId);
+    setVisible(true);
+  };
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
+  const handleDelete = () => {
+    fetch(
+      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide/delete/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      },
+    )
+      .then(response => response.json())
+      .then(data => {
+        Alert.alert('Thông báo', data.message);
+        if (data.status == 200) {
+          fetchSlideList();
+        }
+      });
+    setVisible(false);
+  };
   const Item = ({item, onPress, backgroundColor, textColor}) => (
     <TouchableOpacity
       onPress={onPress}
@@ -57,6 +91,19 @@ const SlideList = props => {
           <Text style={[s.fontWeightBold, styles.fontSize20]}>{item.name}</Text>
         </View>
       </View>
+      <TouchableOpacity
+        style={{position: 'absolute', right: 12, bottom: 17}}
+        onPress={() => showDialog(item.id)}>
+        <FontAwesomeIcon icon={faTrash} style={[s.alighSelfEnd]} />
+      </TouchableOpacity>
+      <Dialog.Container visible={visible}>
+        <Dialog.Title>Thông báo</Dialog.Title>
+        <Dialog.Description>
+          Bạn thật sự muốn xoá danh mục này?
+        </Dialog.Description>
+        <Dialog.Button label="Huỷ" onPress={handleCancel} />
+        <Dialog.Button label="Xoá" onPress={() => handleDelete(id)} />
+      </Dialog.Container>
     </TouchableOpacity>
   );
   let url =

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import Dialog from 'react-native-dialog';
 import {useNavigation, useIsFocused} from '@react-navigation/native';
@@ -15,7 +16,6 @@ import {faTrash} from '@fortawesome/free-solid-svg-icons/faTrash';
 
 import {ipAddress} from '../../../function';
 import {styles} from '../../../styles';
-import {faTrashArrowUp} from '@fortawesome/free-solid-svg-icons';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -59,9 +59,11 @@ const IssuingAgencyList = props => {
     )
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        Alert.alert('Thông báo', data.message);
+        if (data.status == 200) {
+          fetchIssuingAgencyList();
+        }
       });
-    fetchIssuingAgencyList();
     setVisible(false);
   };
   const navigateIssuingAgencyDetails = selectedId => {

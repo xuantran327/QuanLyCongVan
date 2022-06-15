@@ -11,17 +11,11 @@ import {
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {useNavigation} from '@react-navigation/native';
 import RNFetchBlob from 'rn-fetch-blob';
-import {NativeModules} from 'react-native';
-
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
 import {styles} from '../../styles';
 import {getDateTime, getDate, ipAddress} from '../../function';
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
-
-// const RNFetchBlob = NativeModules.RNFetchBlob;
 
 const DispatchDetails = props => {
   const IP_ADDRESS = ipAddress();
