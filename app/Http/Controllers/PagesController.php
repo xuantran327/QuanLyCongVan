@@ -505,4 +505,169 @@ class PagesController extends Controller
         }
         return response()->json(['message' => 'Xoá thành công!', 'status' => 200]);
     }
+
+    public function deleteDocumentForm($id) {
+        $hinhthucvanban = HinhThucVanBan::find($id);
+		//kiểm tra khoá ngoại trước khi xoá
+		$kiemtrakhoangoai = CongVan::where('id_hinh_thuc_van_ban', $id)->get();
+		$soluong = count($kiemtrakhoangoai);
+        if ($soluong) {
+            return response()->json([
+                'message' => 'Không được phép xoá danh mục này vì đang có ' . $soluong . ' công văn đang sử dụng danh mục. Vui lòng tìm và xoá toàn bộ những công văn đó trước!',
+                'status' => 401,
+            ]);
+        } else {
+            $hinhthucvanban->delete();
+        }
+        return response()->json(['message' => 'Xoá thành công!', 'status' => 200]);
+    }
+
+    public function deleteField($id) {
+        $linhvuc = LinhVuc::find($id);
+		//kiểm tra khoá ngoại trước khi xoá
+		$kiemtrakhoangoai = CongVan::where('id_linh_vuc', $id)->get();
+		$soluong = count($kiemtrakhoangoai);
+        if ($soluong) {
+            return response()->json([
+                'message' => 'Không được phép xoá danh mục này vì đang có ' . $soluong . ' công văn đang sử dụng danh mục. Vui lòng tìm và xoá toàn bộ những công văn đó trước!',
+                'status' => 401,
+            ]);
+        } else {
+            $linhvuc->delete();
+        }
+        return response()->json(['message' => 'Xoá thành công!', 'status' => 200]);
+    }
+
+    public function deleteDocumentType($id) {
+        $loaivanban = LoaiVanBan::find($id);
+		//kiểm tra khoá ngoại trước khi xoá
+		$kiemtrakhoangoai = CongVan::where('id_loai_van_ban', $id)->get();
+		$soluong = count($kiemtrakhoangoai);
+        if ($soluong) {
+            return response()->json([
+                'message' => 'Không được phép xoá danh mục này vì đang có ' . $soluong . ' công văn đang sử dụng danh mục. Vui lòng tìm và xoá toàn bộ những công văn đó trước!',
+                'status' => 401,
+            ]);
+        } else {
+            $loaivanban->delete();
+        }
+        return response()->json(['message' => 'Xoá thành công!', 'status' => 200]);
+    }
+
+    public function deleteDispatchType($id) {
+        $loaivanban = LoaiHinhCongVan::find($id);
+		//kiểm tra khoá ngoại trước khi xoá
+		$kiemtrakhoangoai = CongVan::where('id_loai_hinh_cong_van', $id)->get();
+		$soluong = count($kiemtrakhoangoai);
+        if ($soluong) {
+            return response()->json([
+                'message' => 'Không được phép xoá danh mục này vì đang có ' . $soluong . ' công văn đang sử dụng danh mục. Vui lòng tìm và xoá toàn bộ những công văn đó trước!',
+                'status' => 401,
+            ]);
+        } else {
+            $loaivanban->delete();
+        }
+        return response()->json(['message' => 'Xoá thành công!', 'status' => 200]);
+    }
+
+    public function deleteSlide($id) {
+        $slide = Slide::find($id);
+		$slide->delete();
+        return response()->json(['message' => 'Xoá thành công!', 'status' => 200]);
+    }
+
+    public function deleteDispatch($id) {
+        $congvan = CongVan::find($id);
+		$congvan->delete();
+        return response()->json(['message' => 'Xoá thành công!', 'status' => 200]);
+    }
+
+    public function getDispatch($id) {
+        $congvan = CongVan::find($id);
+        $coquanbanhanh = CoQuanBanHanh::all();
+		$hinhthucvanban = HinhThucVanBan::all();
+		$linhvuc = LinhVuc::all();
+		$loaihinhcongvan = LoaiHinhCongVan::all();
+		$loaivanban = LoaiVanBan::all();
+        return response()->json(['congvan' => $congvan, 'coquanbanhanh' => $coquanbanhanh, 'hinhthucvanban' => $hinhthucvanban, 'linhvuc' => $linhvuc, 'loaihinhcongvan' => $loaihinhcongvan, 'loaivanban' => $loaivanban]);
+    }
+
+    public function infoList() {
+        $coquanbanhanh = CoQuanBanHanh::all();
+		$hinhthucvanban = HinhThucVanBan::all();
+		$linhvuc = LinhVuc::all();
+		$loaihinhcongvan = LoaiHinhCongVan::all();
+		$loaivanban = LoaiVanBan::all();
+        return response()->json(['coquanbanhanh' => $coquanbanhanh, 'hinhthucvanban' => $hinhthucvanban, 'linhvuc' => $linhvuc, 'loaihinhcongvan' => $loaihinhcongvan, 'loaivanban' => $loaivanban]);
+    }
+
+    public function addDispatch(Request $request) {
+        $this->validate($request,
+			[
+				'soHieu' => 'required',
+
+				'trichYeuNoiDung' => 'required',
+
+				// 'taptindinhkem' => 'required',
+
+
+			],
+			[
+				'soHieu.required' => 'Bạn phải nhập số hiệu',
+
+				'trichYeuNoiDung.required' => 'Bạn phải nhập trích yếu nội dung',
+				// 'taptindinhkem.required' => 'Bạn phải chọn tập tin đính kèm',
+
+			]);
+            $congvan = new CongVan();
+            $congvan->so_hieu = $request->soHieu;
+		$congvan->trich_yeu_noi_dung = $request->trichYeuNoiDung;
+        if ($request->nguoiKy) {
+            $congvan->nguoi_ky = $request->nguoiKy;
+        } else {
+            $congvan->nguoi_ky = "";
+        }
+        $congvan->ngay_lap = ($request->ngayLap ? $request->ngayLap : null);
+		$congvan->ngay_ky = ($request->ngayKy ? $request->ngayKy : null);
+		$congvan->ngay_hieu_luc = ($request->ngayHieuLuc ? $request->ngayHieuLuc : null);
+		$congvan->ngay_chuyen = ($request->ngayChuyen ? $request->ngayChuyen : null);
+		$congvan->con_hieu_luc = $request->conHieuLuc;
+        $congvan->save();
+        return response()->json(['message' => 'Thêm công văn thành công!', 'status' => 200]);
+    }
+
+    public function editDispatch(Request $request, $id) {
+        $congvan = CongVan::find($id);
+        $this->validate($request,
+			[
+				'soHieu' => 'required',
+
+				'trichYeuNoiDung' => 'required',
+
+				// 'taptindinhkem' => 'required',
+
+
+			],
+			[
+				'soHieu.required' => 'Bạn phải nhập số hiệu',
+
+				'trichYeuNoiDung.required' => 'Bạn phải nhập trích yếu nội dung',
+				// 'taptindinhkem.required' => 'Bạn phải chọn tập tin đính kèm',
+
+			]);
+            $congvan->so_hieu = $request->soHieu;
+		$congvan->trich_yeu_noi_dung = $request->trichYeuNoiDung;
+        if ($request->nguoiKy) {
+            $congvan->nguoi_ky = $request->nguoiKy;
+        } else {
+            $congvan->nguoi_ky = "";
+        }
+        $congvan->ngay_lap = ($request->ngayLap ? $request->ngayLap : null);
+		$congvan->ngay_ky = ($request->ngayKy ? $request->ngayKy : null);
+		$congvan->ngay_hieu_luc = ($request->ngayHieuLuc ? $request->ngayHieuLuc : null);
+		$congvan->ngay_chuyen = ($request->ngayChuyen ? $request->ngayChuyen : null);
+		$congvan->con_hieu_luc = $request->conHieuLuc;
+        $congvan->save();
+        return response()->json(['message' => 'Sửa công văn thành công!', 'status' => 200]);
+    }
 }

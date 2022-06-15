@@ -33,6 +33,15 @@ Route::get('dispatch-detail/{id}', [PagesController::class,'dispatchDetails']);
 Route::get('dispatch-list', [PagesController::class,'dispatchList']);
 Route::get('dispatch-list/{search}', [PagesController::class,'search']);
 
+Route::group(['prefix' => 'dispatch'], function () {
+    Route::get('{id}', [PagesController::class,'getDispatch']);
+    Route::post('add', [PagesController::class,'addDispatch']);
+    Route::post('edit/{id}', [PagesController::class,'editDispatch']);
+    Route::get('delete/{id}', [PagesController::class,'deleteDispatch']);
+});
+
+Route::get('info', [PagesController::class,'infoList']);
+
 Route::group(['prefix' => 'issuing-agency'], function () {
     Route::get('list', [PagesController::class,'issuingAgencyList']);
     Route::get('search/{search}', [PagesController::class,'issuingAgencySearch']);
@@ -48,6 +57,7 @@ Route::group(['prefix' => 'document-form'], function () {
     Route::get('{id}', [PagesController::class,'getDocumentForm']);
     Route::post('add', [PagesController::class,'addDocumentForm']);
     Route::post('edit/{id}', [PagesController::class,'editDocumentForm']);
+    Route::get('delete/{id}', [PagesController::class,'deleteDocumentForm']);
 });
 
 Route::group(['prefix' => 'field'], function () {
@@ -56,6 +66,7 @@ Route::group(['prefix' => 'field'], function () {
     Route::get('{id}', [PagesController::class,'getField']);
     Route::post('add', [PagesController::class,'addField']);
     Route::post('edit/{id}', [PagesController::class,'editField']);
+    Route::get('delete/{id}', [PagesController::class,'deleteField']);
 });
 
 Route::group(['prefix' => 'document-type'], function () {
@@ -64,6 +75,7 @@ Route::group(['prefix' => 'document-type'], function () {
     Route::get('{id}', [PagesController::class,'getDocumentType']);
     Route::post('add', [PagesController::class,'addDocumentType']);
     Route::post('edit/{id}', [PagesController::class,'editDocumentType']);
+    Route::get('delete/{id}', [PagesController::class,'deleteDocumentType']);
 });
 
 Route::group(['prefix' => 'dispatch-type'], function () {
@@ -72,6 +84,7 @@ Route::group(['prefix' => 'dispatch-type'], function () {
     Route::get('{id}', [PagesController::class,'getDispatchType']);
     Route::post('add', [PagesController::class,'addDispatchType']);
     Route::post('edit/{id}', [PagesController::class,'editDispatchType']);
+    Route::get('delete/{id}', [PagesController::class,'deleteDispatchType']);
 });
 
 Route::group(['prefix' => 'slide'], function () {
@@ -81,4 +94,5 @@ Route::group(['prefix' => 'slide'], function () {
     Route::post('add', [PagesController::class,'addSlide']);
     Route::post('edit/{id}', [PagesController::class,'editSlide']);
     Route::post('upload', [PagesController::class,'uploadSlide']);
+    Route::get('delete/{id}', [PagesController::class,'deleteSlide']);
 });
