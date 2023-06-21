@@ -448,8 +448,25 @@ class PagesController extends Controller
             file_put_contents('image/slide/'.$fileName, base64_decode($base64));
 
             return response()->json(['message' => 'Tải ảnh thành công!', 'status' => 200, 'fileName' => $fileName]);
-        // }
+        // }$re
         // return response()->json(['message' => 'Tải ảnh thất bại!', 'status' => 401]);
+    }
+
+    public function uploadDispatch(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            // $name = $file->getClientOriginalName();
+			// $taptindinhkem = Str::random(3) . "_" . $name;
+            // while (file_exists("upload/" . $taptindinhkem)) {
+			// 	$taptindinhkem = Str::random(3) . "_" . $name;
+			// }
+            // $file->move("upload/", $taptindinhkem);
+            $path = $file->store('uploads');
+            return response()->json(['message' => 'Tải công văn thành công!', 'status' => 200, 'fileName' => $path]);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'No file uploaded']);
+        }
     }
 
     public function addSlide(Request $request) {

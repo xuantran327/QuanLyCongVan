@@ -38,6 +38,7 @@ Route::group(['prefix' => 'dispatch'], function () {
     Route::post('add', [PagesController::class,'addDispatch']);
     Route::post('edit/{id}', [PagesController::class,'editDispatch']);
     Route::get('delete/{id}', [PagesController::class,'deleteDispatch']);
+    Route::post('upload', [PagesController::class,'uploadDispatch']);
 });
 
 Route::get('info', [PagesController::class,'infoList']);
