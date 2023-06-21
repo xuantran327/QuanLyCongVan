@@ -17,7 +17,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   let loginCheck = () => {
-    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/login`, {
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

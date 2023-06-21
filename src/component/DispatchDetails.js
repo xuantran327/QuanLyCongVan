@@ -7,6 +7,7 @@ import {
   Platform,
   PermissionsAndroid,
   Alert,
+  Linking,
 } from 'react-native';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 import {useNavigation} from '@react-navigation/native';
@@ -30,43 +31,66 @@ const DispatchDetails = props => {
     return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
   };
   const download = fileUrl => {
-    let date = new Date();
-    // File URL which we want to download
     let FILE_URL = fileUrl;
-    // Function to get extention of the file url
-    let file_ext = getFileExtention(FILE_URL);
+    // let date = new Date();
+    // // File URL which we want to download
 
-    file_ext = '.' + file_ext[0];
+    // // Function to get extention of the file url
+    // let file_ext = getFileExtention(FILE_URL);
 
-    // config: To get response by passing the downloading related options
-    // fs: Root directory path to download
-    const {config, fs} = RNFetchBlob;
-    let RootDir = fs.dirs.DownloadDir;
-    let options = {
-      fileCache: true,
-      addAndroidDownloads: {
-        path:
-          RootDir +
-          '/file_' +
-          Math.floor(date.getTime() + date.getSeconds() / 2) +
-          file_ext,
-        description: 'Downloading file...',
-        notification: true,
-        // useDownloadManager works with Android only
-        useDownloadManager: true,
-      },
-    };
-    config(options)
-      .fetch('GET', FILE_URL)
-      .then(res => {
-        // Alert after successful downloading
-        console.log('res -> ', JSON.stringify(res));
-        alert('File Downloaded Successfully.');
-      });
+    // file_ext = '.' + file_ext[0];
+
+    // // config: To get response by passing the downloading related options
+    // // fs: Root directory path to download
+    // const {config, fs} = RNFetchBlob;
+    // let RootDir = fs.dirs.DownloadDir;
+    // console.log(
+    //   RootDir +
+    //     '/file_' +
+    //     Math.floor(date.getTime() + date.getSeconds() / 2) +
+    //     file_ext,
+    // );
+    // let options = {
+    //   fileCache: true,
+    //   addAndroidDownloads: {
+    //     path:
+    //       RootDir +
+    //       '/file_' +
+    //       Math.floor(date.getTime() + date.getSeconds() / 2) +
+    //       file_ext,
+    //     description: 'Downloading file...',
+    //     notification: true,
+    //     // useDownloadManager works with Android only
+    //     useDownloadManager: true,
+    //     title:
+    //       'file_' +
+    //       Math.floor(date.getTime() + date.getSeconds() / 2) +
+    //       file_ext,
+    //   },
+    // };
+    // config(options)
+    //   .fetch('GET', FILE_URL)
+    //   .then(res => {
+    //     // Alert after successful downloading
+    //     console.log('res -> ', JSON.stringify(res));
+    //     alert('File Downloaded Successfully.');
+    //   });
+    // fetch('GET', FILE_URL).then(res => {
+    //   // Alert after successful downloading
+    //   console.log('res -> ', JSON.stringify(res));
+    //   alert('File Downloaded Successfully.');
+    // });
+    Linking.canOpenURL(FILE_URL).then(supported => {
+      if (supported) {
+        Linking.openURL(FILE_URL);
+      } else {
+        console.warn('Cannot open URL:', FILE_URL);
+      }
+    });
   };
   const checkPermision = async filename => {
     const fileUrl =
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/upload/` + filename;
+      `http://${IP_ADDRESS}/QuanLyCongVan/public/upload/` + filename;
     if (Platform.OS === 'ios') {
       download(fileUrl);
     } else {
@@ -95,7 +119,7 @@ const DispatchDetails = props => {
   };
   useEffect(() => {
     fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-detail/` +
+      `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch-detail/` +
         props.id,
       {
         method: 'GET',
@@ -144,7 +168,7 @@ const DispatchDetails = props => {
                   }}
                   source={{
                     uri:
-                      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/` +
+                      `http://${IP_ADDRESS}/QuanLyCongVan/public/image/thumbnail/` +
                       item.thumbnail,
                   }}
                 />

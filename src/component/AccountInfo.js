@@ -34,7 +34,7 @@ const AccountInfo = props => {
   const [fileName, setFileName] = useState('');
   const [base64, setBase64] = useState('');
   const [uri, setUri] = useState(
-    `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/avatar/default-avatar.png`,
+    `http://${IP_ADDRESS}/QuanLyCongVan/public/image/avatar/default-avatar.png`,
   );
   const ImagePicker = require('react-native-image-picker');
   const handleChoosePhoto = () => {
@@ -60,7 +60,7 @@ const AccountInfo = props => {
     });
   };
   const handleUploadPhoto = (base64, fileName) => {
-    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/upload-avatar`, {
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/upload-avatar`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const AccountInfo = props => {
   };
   const editUser = () => {
     fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/edit-user/${props.id}`,
+      `http://${IP_ADDRESS}/QuanLyCongVan/public/api/edit-user/${props.id}`,
       {
         method: 'POST',
         headers: {
@@ -119,16 +119,13 @@ const AccountInfo = props => {
       });
   };
   useEffect(() => {
-    fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/user/${props.id}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/user/${props.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    )
+    })
       .then(response => response.json())
       .then(data => {
         let array = [];
@@ -136,11 +133,12 @@ const AccountInfo = props => {
         setData(array);
         setIsLoaded(true);
         setName(data.name);
+        setDate(new Date(data.dob));
         setPhoneNumber(data.phone_number);
         setText(getDate(data.dob));
         setFileName(data.avatar_link);
         setUri(
-          `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/avatar/${data.avatar_link}`,
+          `http://${IP_ADDRESS}/QuanLyCongVan/public/image/avatar/${data.avatar_link}`,
         );
         setCheck(data.gender);
       });
@@ -205,7 +203,7 @@ const AccountInfo = props => {
                         <Image
                           style={{width: 20, height: 20}}
                           source={{
-                            uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/selected.png`,
+                            uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/selected.png`,
                           }}
                         />
                         <Text style={[s.ml2]}>{data}</Text>
@@ -219,7 +217,7 @@ const AccountInfo = props => {
                         <Image
                           style={{width: 20, height: 20}}
                           source={{
-                            uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/unselected.png`,
+                            uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/unselected.png`,
                           }}
                         />
                         <Text style={[s.ml2]}>{data}</Text>
@@ -325,6 +323,7 @@ const AccountInfo = props => {
                 </View>
                 <DatePicker
                   modal
+                  // mode="date"
                   open={show}
                   date={date}
                   onConfirm={date => {
@@ -361,7 +360,7 @@ const AccountInfo = props => {
                               <Image
                                 style={{width: 20, height: 20}}
                                 source={{
-                                  uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/selected.png`,
+                                  uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/selected.png`,
                                 }}
                               />
                               <Text style={[s.ml2]}>{data}</Text>
@@ -375,7 +374,7 @@ const AccountInfo = props => {
                               <Image
                                 style={{width: 20, height: 20}}
                                 source={{
-                                  uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/unselected.png`,
+                                  uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/unselected.png`,
                                 }}
                               />
                               <Text style={[s.ml2]}>{data}</Text>

@@ -55,7 +55,7 @@ const DocumentTypeList = props => {
 
   const handleDelete = () => {
     fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-type/delete/${id}`,
+      `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-type/delete/${id}`,
       {
         method: 'GET',
         headers: {
@@ -107,8 +107,8 @@ const DocumentTypeList = props => {
   );
   let url =
     props.search == '' || props.search == null
-      ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-type/list/`
-      : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-type/search/${props.search}`;
+      ? `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-type/list/`
+      : `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-type/search/${props.search}`;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchDocumentTypeList = () => {
     fetch(url, {

@@ -22,13 +22,12 @@ const IntroductionScreen = () => {
           }}>
           Ứng dụng quản lý công văn (QLCV) là ứng dụng di động phục vụ nhu cầu
           xem và quản lý các văn bản, công văn của các công ty, văn phòng, cơ
-          quan nhà nước, được xây dựng trên nền hệ điều hành Android - một trong
-          các hệ điều hành di động phổ biến nhất hiện nay. Ứng dụng tập trung
-          vào việc xem, lưu trữ, quản lý các công văn cũng như các loại văn bản
-          giấy tờ khác tại cơ quan một cách dễ dàng và hợp lý, từ đó giúp cho
-          người lãnh đạo, người đứng đầu đơn vị ra các chỉ thị, các quyết định
-          một cách nhanh chóng chuyển đến đúng đối tượng cần hướng tới và theo
-          dõi được tình trạng của chỉ thị mình ban ra.
+          quan nhà nước. Ứng dụng tập trung vào việc xem, lưu trữ, quản lý các
+          công văn cũng như các loại văn bản giấy tờ khác tại cơ quan một cách
+          dễ dàng và hợp lý, từ đó giúp cho người lãnh đạo, người đứng đầu đơn
+          vị ra các chỉ thị, các quyết định một cách nhanh chóng chuyển đến đúng
+          đối tượng cần hướng tới và theo dõi được tình trạng của chỉ thị mình
+          ban ra.
         </Text>
         <Text
           style={{

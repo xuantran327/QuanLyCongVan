@@ -25,9 +25,9 @@ const UpdateFieldScreen = props => {
   const updateField = opt => {
     let url = '';
     if (!opt) {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/field/add`;
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/field/add`;
     } else {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/field/edit/${
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/field/edit/${
         Object.values(props)[1].params.fieldId
       }`;
     }
@@ -68,7 +68,7 @@ const UpdateFieldScreen = props => {
     const id = Object.values(props)[1].params.fieldId;
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-      fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/field/${id}`, {
+      fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/field/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

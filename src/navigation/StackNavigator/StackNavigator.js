@@ -27,7 +27,7 @@ import DispatchTypeListScreen from '../../screens/admin/DispatchTypeListScreen';
 import UpdateDispatchTypeScreen from '../../screens/admin/UpdateDispatchTypeScreen';
 import SlideListScreen from '../../screens/admin/SlideListScreen';
 import UpdateSlideScreen from '../../screens/admin/UpdateSlideScreen';
-import demo from '../../screens/demo';
+// import demo from '../../screens/demo';
 
 const Stack = createNativeStackNavigator();
 

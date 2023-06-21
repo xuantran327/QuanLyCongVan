@@ -28,7 +28,7 @@ const Slide = props => {
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchSlide = () => {
-    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide`, {
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/slide`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const Slide = props => {
         resizeMode="stretch"
         style={[styles.wrap]}
         source={{
-          uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/slide/default.png`,
+          uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/slide/default.png`,
         }}
       />
     );
@@ -87,7 +87,7 @@ const Slide = props => {
                 style={[styles.wrap]}
                 source={{
                   uri:
-                    `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/slide/` +
+                    `http://${IP_ADDRESS}/QuanLyCongVan/public/image/slide/` +
                     e.image,
                 }}
               />

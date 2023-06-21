@@ -45,7 +45,7 @@ const UpdateSlideScreen = props => {
     });
   };
   const handleUploadPhoto = (base64, fileName) => {
-    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide/upload`, {
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/slide/upload`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,16 +68,16 @@ const UpdateSlideScreen = props => {
   const IP_ADDRESS = ipAddress();
   const [data, setData] = useState([]);
   const [uri, setUri] = useState(
-    `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/slide/slide-default.png`,
+    `http://${IP_ADDRESS}/QuanLyCongVan/public/image/slide/slide-default.png`,
   );
   const [name, setName] = useState('');
   const option = Object.values(props)[1].params.option;
   const updateSlide = opt => {
     let url = '';
     if (!opt) {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide/add`;
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/slide/add`;
     } else {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide/edit/${
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/slide/edit/${
         Object.values(props)[1].params.slideId
       }`;
     }
@@ -94,6 +94,7 @@ const UpdateSlideScreen = props => {
     })
       .then(res => res.json())
       .then(resData => {
+        console.log(resData);
         if (resData.errors) {
           let errorArray = Object.values(resData.errors);
           let errorString = '';
@@ -120,7 +121,7 @@ const UpdateSlideScreen = props => {
     const id = Object.values(props)[1].params.slideId;
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-      fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide/${id}`, {
+      fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/slide/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -133,8 +134,9 @@ const UpdateSlideScreen = props => {
           array.push(data);
           setData(array);
           setName(data.name);
+          setFileName(data.image);
           setUri(
-            `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/slide/${data.image}`,
+            `http://${IP_ADDRESS}/QuanLyCongVan/public/image/slide/${data.image}`,
           );
         });
     }, [IP_ADDRESS, id]);

@@ -25,9 +25,9 @@ const UpdateDispatchTypeScreen = props => {
   const updateDispatchType = opt => {
     let url = '';
     if (!opt) {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-type/add`;
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch-type/add`;
     } else {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-type/edit/${
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch-type/edit/${
         Object.values(props)[1].params.dispatchTypeId
       }`;
     }
@@ -69,7 +69,7 @@ const UpdateDispatchTypeScreen = props => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       fetch(
-        `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-type/${id}`,
+        `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch-type/${id}`,
         {
           method: 'GET',
           headers: {

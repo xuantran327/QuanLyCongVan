@@ -23,7 +23,7 @@ const NewDispatch = props => {
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchNewDispatch = () => {
-    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/new-dispatch`, {
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/new-dispatch`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const NewDispatch = props => {
                 resizeMode="cover"
                 style={{width: '100%', height: 200}}
                 source={{
-                  uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/${item.thumbnail}`,
+                  uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/thumbnail/${item.thumbnail}`,
                 }}
               />
               <Text

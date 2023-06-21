@@ -49,14 +49,14 @@ const DispatchScreen = () => {
         round={true}
       />
       <DispatchList search={search} />
-      <FAB
+      {/* <FAB
         onPress={() => navigation.goBack()}
         title={
           <FontAwesomeIcon icon={faChevronLeft} style={{color: 'white'}} />
         }
         color="green"
         placement="left"
-      />
+      /> */}
     </View>
   );
 };

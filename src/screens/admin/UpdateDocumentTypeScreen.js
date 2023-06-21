@@ -25,9 +25,9 @@ const UpdateDocumentTypeScreen = props => {
   const updateField = opt => {
     let url = '';
     if (!opt) {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-type/add`;
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-type/add`;
     } else {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-type/edit/${
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-type/edit/${
         Object.values(props)[1].params.documentTypeId
       }`;
     }
@@ -69,7 +69,7 @@ const UpdateDocumentTypeScreen = props => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       fetch(
-        `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-type/${id}`,
+        `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-type/${id}`,
         {
           method: 'GET',
           headers: {

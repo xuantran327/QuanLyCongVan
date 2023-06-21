@@ -55,16 +55,13 @@ const SlideList = props => {
   };
 
   const handleDelete = () => {
-    fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide/delete/${id}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/slide/delete/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    )
+    })
       .then(response => response.json())
       .then(data => {
         Alert.alert('Thông báo', data.message);
@@ -83,7 +80,7 @@ const SlideList = props => {
           resizeMode="cover"
           style={{width: '100%', height: 200}}
           source={{
-            uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/slide/${item.image}`,
+            uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/slide/${item.image}`,
           }}
         />
         <View
@@ -108,8 +105,8 @@ const SlideList = props => {
   );
   let url =
     props.search == '' || props.search == null
-      ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide/list/`
-      : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide/search/${props.search}`;
+      ? `http://${IP_ADDRESS}/QuanLyCongVan/public/api/slide/list/`
+      : `http://${IP_ADDRESS}/QuanLyCongVan/public/api/slide/search/${props.search}`;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchSlideList = () => {
     fetch(url, {

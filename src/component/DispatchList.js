@@ -62,7 +62,7 @@ const DispatchList = props => {
             }}
             source={{
               uri:
-                `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/` +
+                `http://${IP_ADDRESS}/QuanLyCongVan/public/image/thumbnail/` +
                 item.thumbnail,
             }}
           />
@@ -88,8 +88,8 @@ const DispatchList = props => {
   );
   let url =
     props.search == '' || props.search == null
-      ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-list/`
-      : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch-list/` +
+      ? `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch-list/`
+      : `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch-list/` +
         props.search;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchDispatchList = () => {

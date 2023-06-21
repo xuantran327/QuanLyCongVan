@@ -34,7 +34,7 @@ const AccountScreen = props => {
   // console.log(userId);
   const navigation = useNavigation();
   let logOut = () => {
-    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/logout`, {
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/logout`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -8,6 +8,7 @@ import {
   Image,
   Platform,
   PermissionsAndroid,
+  Linking,
 } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -16,6 +17,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useNavigation} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 import DatePicker from 'react-native-date-picker';
+// import DocumentPicker from 'react-native-document-picker';
 
 import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
 
@@ -53,7 +55,7 @@ const UpdateDispatchScreen = props => {
     });
   };
   const handleUploadPhoto = (base64, fileName) => {
-    fetch(`http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/slide/upload`, {
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/slide/upload`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -76,7 +78,7 @@ const UpdateDispatchScreen = props => {
   const IP_ADDRESS = ipAddress();
   const [data, setData] = useState([]);
   const [uri, setUri] = useState(
-    `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/thumbnail-default.png`,
+    `http://${IP_ADDRESS}/QuanLyCongVan/public/image/thumbnail/thumbnail-default.png`,
   );
   const [name, setName] = useState('');
   const [soHieu, setSoHieu] = useState('');
@@ -107,13 +109,14 @@ const UpdateDispatchScreen = props => {
   const [LHCVid, setLHCVid] = useState(1);
   const [loaiVanBanId, setLoaiVanBanId] = useState(1);
   const [docFile, setDocFile] = useState('');
+  const [docFileUri, setDocFileUri] = useState('');
   const option = Object.values(props)[1].params.option;
   const updateDispatch = opt => {
     let url = '';
     if (!opt) {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch/add`;
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch/add`;
     } else {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch/edit/${
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch/edit/${
         Object.values(props)[1].params.dispatchId
       }`;
     }
@@ -164,9 +167,9 @@ const UpdateDispatchScreen = props => {
   let url = '';
   if (option) {
     id = Object.values(props)[1].params.dispatchId;
-    url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/dispatch/${id}`;
+    url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch/${id}`;
   } else {
-    url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/info`;
+    url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/info`;
   }
   // if (option) {
   //   const id = Object.values(props)[1].params.dispatchId;
@@ -198,6 +201,10 @@ const UpdateDispatchScreen = props => {
           setSoHieu(congVan.so_hieu);
           setTYND(congVan.trich_yeu_noi_dung);
           setNguoiKy(congVan.nguoi_ky);
+          setNgayLap(new Date(congVan.ngay_lap));
+          setNgayKy(new Date(congVan.ngay_ky));
+          setNgayHieuLuc(new Date(congVan.ngay_hieu_luc));
+          setNgayChuyen(new Date(congVan.ngay_chuyen));
           setNgayLapText(congVan.ngay_lap ? getDate(congVan.ngay_lap) : '');
           setNgayKyText(congVan.ngay_ky ? getDate(congVan.ngay_ky) : '');
           setNgayHieuLucText(
@@ -209,7 +216,7 @@ const UpdateDispatchScreen = props => {
           setDocFile(congVan.ten_tep_dinh_kem);
           setCheck(congVan.con_hieu_luc);
           setUri(
-            `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/thumbnail/${congVan.thumbnail}`,
+            `http://${IP_ADDRESS}/QuanLyCongVan/public/image/thumbnail/${congVan.thumbnail}`,
           );
         }
       });
@@ -219,43 +226,55 @@ const UpdateDispatchScreen = props => {
     return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
   };
   const download = fileUrl => {
-    let date = new Date();
-    // File URL which we want to download
     let FILE_URL = fileUrl;
-    // Function to get extention of the file url
-    let file_ext = getFileExtention(FILE_URL);
+    // let date = new Date();
+    // // File URL which we want to download
 
-    file_ext = '.' + file_ext[0];
+    // // Function to get extention of the file url
+    // let file_ext = getFileExtention(FILE_URL);
 
-    // config: To get response by passing the downloading related options
-    // fs: Root directory path to download
-    const {config, fs} = RNFetchBlob;
-    let RootDir = fs.dirs.DownloadDir;
-    let options = {
-      fileCache: true,
-      addAndroidDownloads: {
-        path:
-          RootDir +
-          '/file_' +
-          Math.floor(date.getTime() + date.getSeconds() / 2) +
-          file_ext,
-        description: 'Downloading file...',
-        notification: true,
-        // useDownloadManager works with Android only
-        useDownloadManager: true,
-      },
-    };
-    config(options)
-      .fetch('GET', FILE_URL)
-      .then(res => {
-        // Alert after successful downloading
-        console.log('res -> ', JSON.stringify(res));
-        alert('File Downloaded Successfully.');
-      });
+    // file_ext = '.' + file_ext[0];
+
+    // // config: To get response by passing the downloading related options
+    // // fs: Root directory path to download
+    // const {config, fs} = RNFetchBlob;
+    // let RootDir = fs.dirs.DownloadDir;
+    // let options = {
+    //   fileCache: true,
+    //   addAndroidDownloads: {
+    //     path:
+    //       RootDir +
+    //       '/file_' +
+    //       Math.floor(date.getTime() + date.getSeconds() / 2) +
+    //       file_ext,
+    //     description: 'Downloading file...',
+    //     notification: true,
+    //     // useDownloadManager works with Android only
+    //     useDownloadManager: true,
+    //     title:
+    //       'file_' +
+    //       Math.floor(date.getTime() + date.getSeconds() / 2) +
+    //       file_ext,
+    //   },
+    // };
+    // config(options)
+    //   .fetch('GET', FILE_URL)
+    //   .then(res => {
+    //     // Alert after successful downloading
+    //     console.log('res -> ', JSON.stringify(res));
+    //     alert('File Downloaded Successfully.');
+    //   });
+    Linking.canOpenURL(FILE_URL).then(supported => {
+      if (supported) {
+        Linking.openURL(FILE_URL);
+      } else {
+        console.warn('Cannot open URL:', FILE_URL);
+      }
+    });
   };
   const checkPermision = async filename => {
     const fileUrl =
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/upload/` + filename;
+      `http://${IP_ADDRESS}/QuanLyCongVan/public/upload/` + filename;
     if (Platform.OS === 'ios') {
       download(fileUrl);
     } else {
@@ -281,6 +300,45 @@ const UpdateDispatchScreen = props => {
         console.log('++++' + err);
       }
     }
+  };
+  // const DocumentPicker = require('react-native-document-picker');
+  const handleFileUpload = async () => {
+    // try {
+    //   const options = {
+    //     type: '*/*',
+    //     copyToCacheDirectory: true,
+    //     multiple: false,
+    //     // You can add more specific file types here
+    //     // For example: .doc, .docx, .pdf, .xls, .zip, .rar
+    //     // Make sure to add the appropriate MIME type for each file type
+    //     // You can find a list of MIME types at https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+    //     // The example below allows doc, docx, pdf, xls, zip, and rar files
+    //     allowedFileTypes: ['doc', 'docx', 'pdf', 'xls', 'zip', 'rar'],
+    //   };
+    //   const result = DocumentPicker.getDocumentAsync(options);
+    //   if (result.type === 'success') {
+    //     setDocFileUri(result.uri);
+    //     const formData = new FormData();
+    //     formData.append('file', {
+    //       uri: result.uri,
+    //       name: result.name,
+    //       type: result.type,
+    //     });
+    //     const response = await fetch(
+    //       `http://${IP_ADDRESS}/QuanLyCongVan/public/api/dispatch/upload`,
+    //       {
+    //         headers: {
+    //           Accept: 'application/json',
+    //           'Content-Type': 'multipart/form-data',
+    //         },
+    //         body: formData,
+    //       },
+    //     );
+    //     console.log('Upload response:', response);
+    //   }
+    // } catch (error) {
+    //   console.warn('File upload error', error);
+    // }
   };
   // }
   return (
@@ -380,6 +438,7 @@ const UpdateDispatchScreen = props => {
           style={{
             height: 100,
             color: 'black',
+            textAlignVertical: 'top',
           }}
           multiline={true}
           numberOfLines={4}
@@ -568,7 +627,7 @@ const UpdateDispatchScreen = props => {
                     <Image
                       style={{width: 20, height: 20}}
                       source={{
-                        uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/selected.png`,
+                        uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/selected.png`,
                       }}
                     />
                     <Text style={[s.ml2]}>{data}</Text>
@@ -582,7 +641,7 @@ const UpdateDispatchScreen = props => {
                     <Image
                       style={{width: 20, height: 20}}
                       source={{
-                        uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/unselected.png`,
+                        uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/unselected.png`,
                       }}
                     />
                     <Text style={[s.ml2]}>{data}</Text>
@@ -592,10 +651,19 @@ const UpdateDispatchScreen = props => {
             );
           })}
       </View>
-      <TouchableOpacity
-        onPress={() => checkPermision(docFile)}
-        style={[styles.loginBtn]}>
-        <Text style={styles.loginText}>Tải tệp về</Text>
+      <>
+        {option ? (
+          <TouchableOpacity
+            onPress={() => checkPermision(docFile)}
+            style={[styles.loginBtn]}>
+            <Text style={styles.loginText}>Tải tệp về</Text>
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
+      </>
+      <TouchableOpacity onPress={handleFileUpload} style={[styles.loginBtn]}>
+        <Text style={styles.loginText}>Tải tệp lên</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.loginBtn]}

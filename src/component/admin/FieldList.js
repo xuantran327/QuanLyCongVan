@@ -54,16 +54,13 @@ const FieldList = props => {
   };
 
   const handleDelete = () => {
-    fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/field/delete/${id}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/field/delete/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    )
+    })
       .then(response => response.json())
       .then(data => {
         Alert.alert('Thông báo', data.message);
@@ -107,8 +104,8 @@ const FieldList = props => {
   );
   let url =
     props.search == '' || props.search == null
-      ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/field/list/`
-      : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/field/search/${props.search}`;
+      ? `http://${IP_ADDRESS}/QuanLyCongVan/public/api/field/list/`
+      : `http://${IP_ADDRESS}/QuanLyCongVan/public/api/field/search/${props.search}`;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchFieldList = () => {
     fetch(url, {

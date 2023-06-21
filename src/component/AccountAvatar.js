@@ -16,16 +16,13 @@ const AccountAvatar = props => {
   const [isLoaded, setIsLoaded] = useState(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchAccountAvatar = () => {
-    fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/user/` + props.id,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/user/` + props.id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    )
+    })
       .then(response => response.json())
       .then(data => {
         let array = [];
@@ -72,7 +69,7 @@ const AccountAvatar = props => {
                   borderRadius: 40,
                 }}
                 source={{
-                  uri: `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/image/avatar/${item.avatar_link}`,
+                  uri: `http://${IP_ADDRESS}/QuanLyCongVan/public/image/avatar/${item.avatar_link}`,
                 }}
                 resizeMode="contain"
               />

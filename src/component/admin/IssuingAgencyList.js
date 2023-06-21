@@ -48,7 +48,7 @@ const IssuingAgencyList = props => {
 
   const handleDelete = () => {
     fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/issuing-agency/delete/${id}`,
+      `http://${IP_ADDRESS}/QuanLyCongVan/public/api/issuing-agency/delete/${id}`,
       {
         method: 'GET',
         headers: {
@@ -107,8 +107,8 @@ const IssuingAgencyList = props => {
   );
   let url =
     props.search == '' || props.search == null
-      ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/issuing-agency/list/`
-      : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/issuing-agency/search/${props.search}`;
+      ? `http://${IP_ADDRESS}/QuanLyCongVan/public/api/issuing-agency/list/`
+      : `http://${IP_ADDRESS}/QuanLyCongVan/public/api/issuing-agency/search/${props.search}`;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchIssuingAgencyList = () => {
     fetch(url, {

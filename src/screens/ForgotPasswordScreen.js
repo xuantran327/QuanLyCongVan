@@ -12,17 +12,14 @@ const ForgotPasswordScreen = () => {
   const IP_ADDRESS = ipAddress();
   const [email, setEmail] = useState();
   let emailCheck = () => {
-    fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/forgot-password`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({email: email}),
+    fetch(`http://${IP_ADDRESS}/QuanLyCongVan/public/api/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    )
+      body: JSON.stringify({email: email}),
+    })
       .then(res => res.json())
       .then(resData => {
         console.log(resData);

@@ -55,7 +55,7 @@ const DocumentFormList = props => {
 
   const handleDelete = () => {
     fetch(
-      `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-form/delete/${id}`,
+      `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-form/delete/${id}`,
       {
         method: 'GET',
         headers: {
@@ -107,8 +107,8 @@ const DocumentFormList = props => {
   );
   let url =
     props.search == '' || props.search == null
-      ? `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-form/list/`
-      : `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-form/search/${props.search}`;
+      ? `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-form/list/`
+      : `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-form/search/${props.search}`;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchDocumentFormList = () => {
     fetch(url, {

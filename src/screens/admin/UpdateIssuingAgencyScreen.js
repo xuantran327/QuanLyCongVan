@@ -25,9 +25,9 @@ const UpdateIssuingAgencyScreen = props => {
   const updateIssuingAgency = opt => {
     let url = '';
     if (opt === 'Add') {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/issuing-agency/add`;
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/issuing-agency/add`;
     } else {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/issuing-agency/edit/${
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/issuing-agency/edit/${
         Object.values(props)[1].params.issuingAgencyId
       }`;
     }
@@ -69,7 +69,7 @@ const UpdateIssuingAgencyScreen = props => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       fetch(
-        `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/issuing-agency/${id}`,
+        `http://${IP_ADDRESS}/QuanLyCongVan/public/api/issuing-agency/${id}`,
         {
           method: 'GET',
           headers: {

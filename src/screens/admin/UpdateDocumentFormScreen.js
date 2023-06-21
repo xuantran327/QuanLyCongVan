@@ -25,9 +25,9 @@ const UpdateDocumentFormScreen = props => {
   const updateDocumentForm = opt => {
     let url = '';
     if (!opt) {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-form/add`;
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-form/add`;
     } else {
-      url = `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-form/edit/${
+      url = `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-form/edit/${
         Object.values(props)[1].params.documentFormId
       }`;
     }
@@ -69,7 +69,7 @@ const UpdateDocumentFormScreen = props => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       fetch(
-        `http://${IP_ADDRESS}:8080/QuanLyCongVan/public/api/document-form/${id}`,
+        `http://${IP_ADDRESS}/QuanLyCongVan/public/api/document-form/${id}`,
         {
           method: 'GET',
           headers: {
